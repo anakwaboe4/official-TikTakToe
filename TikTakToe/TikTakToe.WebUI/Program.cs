@@ -1,13 +1,14 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
-using TikTakToe.WebUI.Data;
+using TikTakToe.Console;
+using TikTakToe.WebUI;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddSingleton<Controller>();
+builder.Services.AddHttpContextAccessor();
+builder.Services.Configure<Settings>(builder.Configuration.GetSection(Settings.Location));
 
 var app = builder.Build();
 
