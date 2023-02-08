@@ -1,16 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TikTakToe.Console\TikTakToe.Console.csproj" />
     <ProjectReference Include="..\TikTakToe.Core\TikTakToe.Core.csproj" />
-    <ProjectReference Include="..\TikTakToe.WebUI\TikTakToe.WebUI.csproj" />
   </ItemGroup>
 
 </Project>
