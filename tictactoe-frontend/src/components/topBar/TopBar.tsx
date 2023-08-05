@@ -1,26 +1,50 @@
-import { Button, SelectTabData, SelectTabEvent, Tab, TabList } from "@fluentui/react-components"
-import { Lightbulb16Regular, WeatherMoon16Regular } from "@fluentui/react-icons";
+import { Button, SelectTabData, SelectTabEvent, Tab, TabList, Theme, webDarkTheme, webLightTheme } from "@fluentui/react-components"
+import { WeatherSunny16Filled, WeatherMoon16Regular } from "@fluentui/react-icons";
 import styles from "./TopBar.module.scss";
+import { useEffect } from "react";
+import { Tabs } from "../../models";
 
 export const TopBar = (props: {
+    theme: Theme,
     toggleTheme: () => void
-    selectedTab: string,
+    selectedTab: Tabs,
     onSelectedTabChange: (event: SelectTabEvent, data: SelectTabData) => void;
 }) => {
-    const { toggleTheme, selectedTab, onSelectedTabChange } = props;
+    const {
+        theme,
+        toggleTheme,
+        selectedTab,
+        onSelectedTabChange
+    } = props;
+
+    // Functions
+    const getThemeIcon = () => {
+        switch (theme) {
+            default:
+            case webLightTheme:
+                return <WeatherSunny16Filled />
+            case webDarkTheme:
+                return <WeatherMoon16Regular />
+        }
+    }
+
+    // Effects
+    useEffect(() => {
+        getThemeIcon()
+    }, [selectedTab])
 
     return (
         <div className={styles.container}>
             <TabList selectedValue={selectedTab} onTabSelect={onSelectedTabChange} className={styles.center}>
-                <Tab id="Game" value="game">
+                <Tab id="Game" value={Tabs.Game}>
                     Game
                 </Tab>
-                <Tab id="Settings" value="settings">
+                <Tab id="Settings" value={Tabs.Settings}>
                     Settings
                 </Tab>
             </TabList>
             <Button
-                icon={<WeatherMoon16Regular />}
+                icon={getThemeIcon()}
                 className={styles.right}
                 onClick={toggleTheme}
             />

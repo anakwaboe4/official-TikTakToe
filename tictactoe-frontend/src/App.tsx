@@ -17,7 +17,10 @@ export const TicTacToe: React.FC = () => {
 
   return (
     <FluentProvider theme={theme}>
-      <Root toggleTheme={toggleTheme} />
+      <Root
+        theme={theme}
+        toggleTheme={toggleTheme}
+      />
     </FluentProvider>
   )
 }
