@@ -1,7 +1,7 @@
 ﻿using TikTakToe.Core.Boards;
 using TikTakToe.Core.Participants;
 
-namespace TikTakToe.Console
+namespace TikTakToe.Controller
 {
     public class Controller
     {

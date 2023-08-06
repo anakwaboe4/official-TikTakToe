@@ -2,6 +2,8 @@
 {
     public class GamePostBody
     {
-        public List<int> participantsIds { get; set; }
+        public List<int> ParticipantsIds { get; set; }
+        public int LengthX { get; set; }
+        public int LengthY { get; set; }
     }
 }
