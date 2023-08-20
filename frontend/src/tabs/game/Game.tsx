@@ -1,7 +1,17 @@
-import { Label } from "@fluentui/react-components";
+import { Board } from "../../components"
+import { UseGame } from "./UseGame";
 
 export const Game = () => {
+    const {
+        squares,
+        restart
+    } = UseGame();
+
     return (
-        <Label weight="semibold">Here comes the game!</Label>
+        <div>
+            <Board
+                squares={squares}
+            />
+        </div>
     )
 }
