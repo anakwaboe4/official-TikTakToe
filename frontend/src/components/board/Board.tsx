@@ -13,6 +13,7 @@ export const Board = (props: {
 
     return (
         <div>
+            testboard
             {squares}
         </div>
     );

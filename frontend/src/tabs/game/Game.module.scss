@@ -1,0 +1,11 @@
+.container {
+    display: flex;
+
+    .board {
+        flex: 0 0 70%;
+    }
+
+    .sidebar {
+        flex: 0 0 30%;
+    }
+}
