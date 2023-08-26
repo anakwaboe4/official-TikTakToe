@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { TopBar } from "..";
 import { SelectTabData, SelectTabEvent, Theme } from "@fluentui/react-components";
 import styles from "./Root.module.scss";
@@ -29,11 +29,6 @@ export const Root = (props: {
                 return <Settings />
         }
     }
-
-    // Effects
-    useEffect(() => {
-        getTab()
-    }, [selectedTab])
 
     return (
         <div className={styles.container}>

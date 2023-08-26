@@ -1,7 +1,6 @@
 import { Button, SelectTabData, SelectTabEvent, Tab, TabList, Theme, webDarkTheme, webLightTheme } from "@fluentui/react-components"
 import { WeatherSunny16Filled, WeatherMoon16Regular } from "@fluentui/react-icons";
 import styles from "./TopBar.module.scss";
-import { useEffect } from "react";
 import { Tabs } from "../../models";
 
 export const TopBar = (props: {
@@ -27,11 +26,6 @@ export const TopBar = (props: {
                 return <WeatherMoon16Regular />
         }
     }
-
-    // Effects
-    useEffect(() => {
-        getThemeIcon()
-    }, [selectedTab])
 
     return (
         <div className={styles.container}>
