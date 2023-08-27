@@ -4,16 +4,23 @@ import styles from "./Board.module.scss";
 
 export const Board = (props: {
     squares: number[][],
-    settings: ISettings;
+    settings: ISettings,
+    currentPlayerId: number,
+    makeMove: (playerId: number, square: number) => void,
 }) => {
     const {
         squares,
         settings,
+        currentPlayerId,
+        makeMove,
     } = props;
 
     // State
 
     // Functions
+    const onSquareClick = (square: number) => {
+        makeMove(currentPlayerId, square);
+    }
 
     // Effects
 
@@ -27,6 +34,7 @@ export const Board = (props: {
                                 className={item !== 0 ? styles.buttonFilled : styles.buttonEmpty}
                                 shape="square"
                                 appearance={item === 0 ? (undefined) : "outline"}
+                                onClick={() => {onSquareClick((rowIndex * settings.lengthX) + itemIndex)}}
                             >
                                 {item !== 0 && <div className={styles.text}>
                                     {settings.characters[item - 1]}

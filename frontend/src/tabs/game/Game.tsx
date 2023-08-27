@@ -12,6 +12,8 @@ export const Game = (props: {
 
     const {
         squares,
+        currentPlayerId,
+        makeMove,
         restart,
     } = UseGame();
 
@@ -21,6 +23,8 @@ export const Game = (props: {
                 <Board
                     squares={squares}
                     settings={settings}
+                    currentPlayerId={currentPlayerId}
+                    makeMove={makeMove}
                 />
             </div>
             <div className={styles.sidebar}>
