@@ -1,7 +1,6 @@
-import { Button, Divider } from "@fluentui/react-components";
+import { Button } from "@fluentui/react-components";
 import { ISettings } from "../../models";
 import styles from "./Board.module.scss";
-import { Text } from "react-native";
 
 export const Board = (props: {
     squares: number[][],
