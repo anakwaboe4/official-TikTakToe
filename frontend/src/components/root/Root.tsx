@@ -3,7 +3,7 @@ import { TopBar } from "..";
 import { SelectTabData, SelectTabEvent, Theme } from "@fluentui/react-components";
 import styles from "./Root.module.scss";
 import { Game, Settings } from "../../tabs";
-import { Tabs } from "../../models";
+import { ISettings, Tabs } from "../../models";
 
 export const Root = (props: {
     theme: Theme,
@@ -16,6 +16,7 @@ export const Root = (props: {
 
     // State
     const [selectedTab, setSelectedTab] = useState<Tabs>(Tabs.Game);
+    const settings: ISettings = {lengthX: 3, lengthY: 3, characters: ["X", "O"]} as ISettings;
 
     // Functions
     const onSelectedTabChange = (event: SelectTabEvent, data: SelectTabData) => {
@@ -24,7 +25,9 @@ export const Root = (props: {
     const getTab = () => {
         switch (selectedTab) {
             case Tabs.Game:
-                return <Game />
+                return <Game
+                        settings={settings}
+                        />
             case Tabs.Settings:
                 return <Settings />
         }

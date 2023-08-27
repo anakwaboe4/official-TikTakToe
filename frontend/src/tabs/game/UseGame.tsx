@@ -11,7 +11,7 @@ export const UseGame = (
     const webApi = useWebApi();
     
     // State
-    const [squares, setSquares] = useState<number[][]>([[]]);
+    const [squares, setSquares] = useState<number[][]>([[0, 1, 0], [2, 0, 0], [0, 0, 0]]);
 
     // Functions
     const restart = async () => {
