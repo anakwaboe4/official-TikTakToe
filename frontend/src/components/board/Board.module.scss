@@ -12,8 +12,13 @@
             flex: 1 0 auto;
             display: flex;
 
-            .button {
+            .buttonEmpty {
                 flex: 1 0 auto;
+            }
+
+            .buttonFilled {
+                flex: 1 0 auto;
+                cursor: default;
 
                 .text {
                     font-size: 30cqmin;

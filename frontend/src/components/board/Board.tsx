@@ -25,12 +25,13 @@ export const Board = (props: {
                     {row.map((item, itemIndex) => (
                         <div className={styles.item}>
                             <Button
-                                className={styles.button}
+                                className={item !== 0 ? styles.buttonFilled : styles.buttonEmpty}
                                 shape="square"
+                                appearance={item === 0 ? (undefined) : "outline"}
                             >
-                                <div className={styles.text}>
+                                {item !== 0 && <div className={styles.text}>
                                     {settings.characters[item - 1]}
-                                </div>
+                                </div>}
                             </Button>
                         </div>
                     ))}
