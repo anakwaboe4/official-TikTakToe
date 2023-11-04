@@ -76,7 +76,7 @@ namespace TikTakToe.Services
                 var row = new List<Squares>();
                 for (int y = 0; y < Board.LengthY; y++)
                 {
-                    row.Add(Board.BoardSquares[x + y]);
+                    row.Add(Board.BoardSquares[x * Board.LengthX + y]);
                 }
                 returnBoard.Add(row);
             }

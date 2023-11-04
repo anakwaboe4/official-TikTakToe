@@ -41,14 +41,16 @@ namespace TikTakToe.API.Controllers
         #region PUT/games/move
         [HttpPut]
         [Produces("application/json")]
-        [SwaggerResponse(200, Type = typeof(bool))]
+        [SwaggerResponse(200, Type = typeof(GamesResponse))]
         [SwaggerResponse(400, Type = typeof(ErrorResponse))]
         [Route("api/games/move")]
         public ActionResult MakeMove([FromBody] MovePutBody move)
         {
             try
             {
-                return Ok(_gameService.MakeMove(move.Position, move.Square));
+                _gameService.MakeMove(move.Position, move.Square);
+
+                return Ok(new GamesResponse() { Squares = _gameService.GetBoard() });
             }
             catch(Exception)
             {
