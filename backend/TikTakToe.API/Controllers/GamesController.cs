@@ -9,12 +9,10 @@ namespace TikTakToe.API.Controllers
     public class GamesController : ControllerBase
     {
         private IGameService _gameService;
-        private readonly ILogger _logger;
 
-        public GamesController(IGameService gameService, ILogger logger)
+        public GamesController(IGameService gameService)
         {
             _gameService = gameService;
-            _logger = logger;
         }
 
         #region POST/games
@@ -33,9 +31,8 @@ namespace TikTakToe.API.Controllers
                     game.LengthY);
                 return Ok(new GamesResponse() { Squares = _gameService.GetBoard()});
             }
-            catch(Exception ex) 
+            catch(Exception)
             {
-                _logger.LogError(ex, ex.Message);
                 return BadRequest("Failed creating new game, check game settings");
             }
         }
@@ -53,9 +50,8 @@ namespace TikTakToe.API.Controllers
             {
                 return Ok(_gameService.MakeMove(move.Position, move.Square));
             }
-            catch(Exception ex)
+            catch(Exception)
             {
-                _logger.LogError(ex, ex.Message);
                 return BadRequest("Failed making move for player, check game settings");
             }
         }
@@ -73,9 +69,8 @@ namespace TikTakToe.API.Controllers
             {
                 return Ok(_gameService.MakeAiMove(move.Participant, move.Square));
             }
-            catch(Exception ex)
+            catch(Exception)
             {
-                _logger.LogError(ex, ex.Message);
                 return BadRequest("Failed making move for AI, check game settings");
             }
         }

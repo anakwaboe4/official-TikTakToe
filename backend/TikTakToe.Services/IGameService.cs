@@ -9,7 +9,6 @@ namespace TikTakToe.Services
         bool CheckMove(int position);
         bool MakeMove(int position, Squares move);
         bool MakeAiMove(int participant, Squares square);
-        int CalculateScore();
         List<List<Squares>> GetBoard();
         string PrintBoard();
         string ToString();

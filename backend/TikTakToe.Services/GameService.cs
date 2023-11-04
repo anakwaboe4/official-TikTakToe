@@ -68,13 +68,6 @@ namespace TikTakToe.Services
             return MakeMove(position, square);
         }
 
-        public int CalculateScore()
-        {
-            Board.Score = 0;
-
-            return Board.Score;
-        }
-
         public List<List<Squares>> GetBoard()
         {
             var returnBoard = new List<List<Squares>>();
@@ -107,7 +100,7 @@ namespace TikTakToe.Services
 
         public override string ToString()
         {
-            return PrintBoard() + "\n" + Board.Score + "\n" + Board.Move + "\n" + Board.LengthX + "\n" + Board.LengthY;
+            return PrintBoard() + "\n" + Board.Move + "\n" + Board.LengthX + "\n" + Board.LengthY;
         }
 
         #region Private Methods

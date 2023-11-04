@@ -2,10 +2,6 @@ using TikTakToe.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add logging
-builder.Logging.ClearProviders();
-builder.Logging.AddConsole();
-
 // Add services to the container.
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
