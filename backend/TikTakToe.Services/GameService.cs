@@ -7,7 +7,7 @@ namespace TikTakToe.Services
 {
     public class GameService : IGameService
     {
-        public List<IEngine> Participants { get; set; }
+        public IEnumerable<IEngine> Participants { get; set; }
         public Board Board { get; set; }
 
         public GameService()
@@ -22,14 +22,16 @@ namespace TikTakToe.Services
             Board = new Board();
         }
 
-        public void NewGame(List<IEngine> participants, Board board)
+        public void NewGame(List<Core.Enums.Engines> engineIds, int lengthX, int lengthY)
         {
-            Participants = participants;
-            Board = board;
+            // Map enum to type
+            Participants = engineIds.Select(GetEngineFromId);
+            Board = new Board(lengthX, lengthY);
         }
 
         public bool CheckMove(int position)
         {
+            // Check if int position is valid and if board position is empty
             if (position < Board.BoardSquares.Count() &&
                 Board.BoardSquares[position] == Squares.Empty)
             {
@@ -41,11 +43,11 @@ namespace TikTakToe.Services
             }
         }
 
-        public bool MakeMove(int position, Squares move)
+        public bool MakeMove(int position, Squares square)
         {
             if (CheckMove(position))
             {
-                Board.BoardSquares[position] = move;
+                Board.BoardSquares[position] = square;
                 Board.Move++;
                 return true;
             }
@@ -55,9 +57,15 @@ namespace TikTakToe.Services
             }
         }
 
-        public bool MakeAiMove(int position, Squares move)
+        public bool MakeAiMove(int participant, Squares square)
         {
-            throw new NotImplementedException();
+            var engine = Participants.ElementAt(participant);
+
+            var board = CreateIntBoard(participant);
+
+            var position = engine.SetPos(board);
+
+            return MakeMove(position, square);
         }
 
         public int CalculateScore()
@@ -101,5 +109,29 @@ namespace TikTakToe.Services
         {
             return PrintBoard() + "\n" + Board.Score + "\n" + Board.Move + "\n" + Board.LengthX + "\n" + Board.LengthY;
         }
+
+        #region Private Methods
+        private IEngine GetEngineFromId(Core.Enums.Engines engineId)
+        {
+            return engineId switch
+            {
+                Core.Enums.Engines.Player => new Player(),
+                Core.Enums.Engines.PerfectOptemism => new Player(),
+                _ => new Player(),
+            };
+        }
+
+        private int CreateIntBoard(int participant)
+        {
+            var board = participant * 100000000;
+
+            for (int i = 0, n = 1; i < Board.BoardSquares.Length; i++, n *= 10)
+            {
+                board += (int)Board.BoardSquares[i] * n;
+            }
+
+            return board;
+        }
+        #endregion
     }
 }

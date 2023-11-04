@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TikTakToe.Core.Enums;
-using TikTakToe.Engines;
+﻿using TikTakToe.Engines;
 
 namespace TikTakToe.Core.Participants
 {

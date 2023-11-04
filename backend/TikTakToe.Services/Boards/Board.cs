@@ -5,7 +5,6 @@ namespace TikTakToe.Core.Boards
     public class Board
     {
         public Squares[] BoardSquares { get; set; }
-        public int Score { get; set; } = 0;
         public int Move { get; set; } = 0;
         public int LengthX { get; set; }
         public int LengthY { get; set; }

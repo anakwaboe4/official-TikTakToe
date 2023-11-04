@@ -2,9 +2,6 @@
 using Swashbuckle.AspNetCore.Annotations;
 using TikTakToe.API.Models;
 using TikTakToe.API.Models.Games;
-using TikTakToe.Core.Boards;
-using TikTakToe.Core.Participants;
-using TikTakToe.Engines;
 using TikTakToe.Services;
 
 namespace TikTakToe.API.Controllers
@@ -12,34 +9,74 @@ namespace TikTakToe.API.Controllers
     public class GamesController : ControllerBase
     {
         private IGameService _gameService;
+        private readonly ILogger _logger;
 
-        public GamesController(IGameService gameService)
+        public GamesController(IGameService gameService, ILogger logger)
         {
             _gameService = gameService;
+            _logger = logger;
         }
 
-        #region GET/games
+        #region POST/games
         [HttpPost]
         [Produces("application/json")]
         [SwaggerResponse(200, Type = typeof(GamesResponse))]
         [SwaggerResponse(400, Type = typeof(ErrorResponse))]
         [Route("api/games")]
-        public async Task<ActionResult> GamesGetAsync([FromBody] GamePostBody game)
+        public ActionResult GamesGetAsync([FromBody] GamePostBody game)
         {
             try
             {
                 _gameService.NewGame(
-                    new List<IEngine>()
-                    {
-                        new Player(),
-                        new Player()
-                    },
-                    new Board(game.LengthX, game.LengthY));
+                    game.ParticipantsIds,
+                    game.LengthX,
+                    game.LengthY);
                 return Ok(new GamesResponse() { Squares = _gameService.GetBoard()});
             }
             catch(Exception ex) 
             {
-                return BadRequest(ex.Message);
+                _logger.LogError(ex, ex.Message);
+                return BadRequest("Failed creating new game, check game settings");
+            }
+        }
+        #endregion
+
+        #region PUT/games/move
+        [HttpPut]
+        [Produces("application/json")]
+        [SwaggerResponse(200, Type = typeof(bool))]
+        [SwaggerResponse(400, Type = typeof(ErrorResponse))]
+        [Route("api/games/move")]
+        public ActionResult MakeMove([FromBody] MovePutBody move)
+        {
+            try
+            {
+                return Ok(_gameService.MakeMove(move.Position, move.Square));
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return BadRequest("Failed making move for player, check game settings");
+            }
+        }
+        #endregion
+
+        #region PUT/games/aimove
+        [HttpPut]
+        [Produces("application/json")]
+        [SwaggerResponse(200, Type = typeof(bool))]
+        [SwaggerResponse(400, Type = typeof(ErrorResponse))]
+        [Route("api/games/aimove")]
+        public ActionResult MakeAiMove([FromBody] MoveAiPutBody move)
+        {
+            try
+            {
+                return Ok(_gameService.MakeAiMove(move.Participant, move.Square));
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return BadRequest("Failed making move for AI, check game settings");
             }
         }
         #endregion
