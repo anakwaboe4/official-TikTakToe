@@ -4,6 +4,5 @@
     {
         Player = 0,
         PerfectOptemism = 1,
-
     }
 }
