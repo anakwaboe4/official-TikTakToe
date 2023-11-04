@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TikTakToe.Core\TikTakToe.Core.csproj" />
+    <ProjectReference Include="..\TikTakToe.Engines\TikTakToe.Engines.csproj" />
+  </ItemGroup>
+
+</Project>

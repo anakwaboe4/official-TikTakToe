@@ -2,15 +2,21 @@
 using Swashbuckle.AspNetCore.Annotations;
 using TikTakToe.API.Models;
 using TikTakToe.API.Models.Games;
+using TikTakToe.Core.Boards;
 using TikTakToe.Core.Participants;
+using TikTakToe.Engines;
+using TikTakToe.Services;
 
 namespace TikTakToe.API.Controllers
 {
     public class GamesController : ControllerBase
     {
-        private Controller.Controller _controller;
+        private IGameService _gameService;
 
-        public GamesController(Controller.Controller controller) => _controller = controller;
+        public GamesController(IGameService gameService)
+        {
+            _gameService = gameService;
+        }
 
         #region GET/games
         [HttpPost]
@@ -22,9 +28,14 @@ namespace TikTakToe.API.Controllers
         {
             try
             {
-                var newGame = new Controller.Controller(new List<Participant>() { new Player(), new Player() }, new Core.Boards.Board(game.LengthX, game.LengthY));
-                _controller = newGame;
-                return Ok(new GamesResponse() { Squares = newGame.Board.GetBoard()});
+                _gameService.NewGame(
+                    new List<IEngine>()
+                    {
+                        new Player(),
+                        new Player()
+                    },
+                    new Board(game.LengthX, game.LengthY));
+                return Ok(new GamesResponse() { Squares = _gameService.GetBoard()});
             }
             catch(Exception ex) 
             {

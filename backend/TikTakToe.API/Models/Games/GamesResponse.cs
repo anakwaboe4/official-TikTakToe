@@ -2,7 +2,7 @@
 
 namespace TikTakToe.API.Models.Games
 {
-    public class GamesResponse
+    public struct GamesResponse
     {
         public List<List<Squares>> Squares { get; set; }
     }

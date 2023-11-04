@@ -1,6 +1,6 @@
 ﻿namespace TikTakToe.API.Models
 {
-    public class ErrorResponse
+    public struct ErrorResponse
     {
         public string Message { get; set; }
     }

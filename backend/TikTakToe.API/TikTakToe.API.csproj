@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TikTakToe.Controller\TikTakToe.Controller.csproj" />
     <ProjectReference Include="..\TikTakToe.Core\TikTakToe.Core.csproj" />
+    <ProjectReference Include="..\TikTakToe.Services\TikTakToe.Services.csproj" />
   </ItemGroup>
 
 </Project>
