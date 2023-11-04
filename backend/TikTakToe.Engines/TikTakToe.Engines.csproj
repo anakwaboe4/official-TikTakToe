@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TikTakToe.Core\TikTakToe.Core.csproj" />
+  </ItemGroup>
+
 </Project>

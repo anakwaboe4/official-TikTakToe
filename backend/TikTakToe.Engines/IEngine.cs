@@ -1,5 +1,4 @@
-﻿using TikTakToe.Core.Enums;
-namespace TikTakToe.Engines
+﻿namespace TikTakToe.Engines
 {
     public interface IEngine
     {

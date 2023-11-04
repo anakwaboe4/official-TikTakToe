@@ -10,6 +10,8 @@ namespace TikTakToe.Core.Participants
 {
     public class Player : IEngine
     {
+        public Enums.Engines Engine => Enums.Engines.Player;
+
         public int MakeMove(int move)
         {
             throw new NotImplementedException();
