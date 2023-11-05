@@ -23,7 +23,6 @@ namespace TikTakToe.Engines.Engines.random
             SetPos(0);
             sw.Stop();
             return sw.ElapsedMilliseconds;
-
         }
 
         public int MakeMove(int move)
@@ -36,12 +35,9 @@ namespace TikTakToe.Engines.Engines.random
                 {
                     legalMoves.Add(i);
                 }
-;
-            }
-            
+            }  
             int index = randomPicker.Next(legalMoves.Count);
             return legalMoves[index];
-
         }
 
         public int SetPos(int position)
@@ -54,13 +50,9 @@ namespace TikTakToe.Engines.Engines.random
                 {
                     legalMoves.Add(i);
                 }
-;
             }
-
             int index = randomPicker.Next(legalMoves.Count);
             return legalMoves[index];
-
-
         }
 
         private int Domove(int board, int move)
