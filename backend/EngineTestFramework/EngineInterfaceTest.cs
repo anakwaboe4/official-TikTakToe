@@ -1,72 +1,58 @@
+using System.Linq;
+using TikTakToe.Core.Enums;
+using TikTakToe.Engines;
+using TikTakToe.Engines.Engines.perfectOpertunism;
+
 namespace EngineTestFramework
 {
     [TestClass]
     public class EngineInterfaceTest
     {
-        private List<string> classNames;
+        private List<IEngine> engines;
+
         public EngineInterfaceTest()
         {
-            classNames = new List<string>
+            engines = new List<IEngine>
             {
-                "TikTakToe.Engines.Engines.perfectOpertunism.PerfectOpertunism",
-                "TikTakToe.Engines.Engines.random.random",
+                new PerfectOpertunism(),
+                new TikTakToe.Engines.Engines.random.random()
             };
         }
+
         [TestMethod]
         public void TestEachClassHasEnumProperty()
         {
-            foreach(var className in classNames)
+            foreach(var engine in engines)
             {
-                Type type = Type.GetType(className);
-
-                if(type != null)
-                {
-                    var enumProperty = type.GetProperty("Engine");
-                    Assert.IsNotNull(enumProperty, $"Missing 'Engine' property in class: {className}");
-                    Assert.IsTrue(enumProperty.PropertyType == typeof(TikTakToe.Core.Enums.Engines), $"Invalid type for 'Engine' property in class: {className}");
-                }
-                else
-                {
-                    Assert.Fail($"Type not found: {className}");
-                }
+                var enumValue = engine.Engine;
+                Assert.IsNotNull(enumValue, $"Engine property is null in class: {engine.GetType().Name}");
+                Assert.IsTrue(enumValue.GetType() == typeof(Engines), $"Invalid type for Engine property in class: {engine.GetType().Name}");
             }
         }
-
 
         [TestMethod]
         public void TestNoDuplicateEnumValues()
         {
-            var enumValues = Enum.GetValues(typeof(TikTakToe.Core.Enums.Engines))
-                .Cast<TikTakToe.Core.Enums.Engines>()
-                .Where(e => e != TikTakToe.Core.Enums.Engines.Player);
+            var usedEnumValues = new List<Engines>();
 
-            var usedEnumValues = new List<TikTakToe.Core.Enums.Engines>();
-
-            foreach(var className in classNames)
+            foreach(var engine in engines)
             {
-                Type type = Type.GetType(className);
-                if(type != null)
-                {
-                    var enumProperty = type.GetProperty("Engine");
-                    var enumValue = (TikTakToe.Core.Enums.Engines)enumProperty.GetValue(Activator.CreateInstance(type));
-                    Assert.IsFalse(usedEnumValues.Contains(enumValue), $"Duplicate use of enum value: {enumValue} in class: {className}");
-                    usedEnumValues.Add(enumValue);
-                }
+                var enumValue = engine.Engine;
+                Assert.IsFalse(usedEnumValues.Contains(enumValue), $"Duplicate use of enum value: {enumValue} in class: {engine.GetType().Name}");
+                usedEnumValues.Add(enumValue);
             }
         }
-
 
         [TestMethod]
         public void TestAllEnumValuesPresentInClassNames()
         {
-            var enumValues = Enum.GetValues(typeof(TikTakToe.Core.Enums.Engines))
-                .Cast<TikTakToe.Core.Enums.Engines>()
-                .Where(e => e != TikTakToe.Core.Enums.Engines.Player);
+            var enumValues = Enum.GetValues(typeof(Engines))
+                .Cast<Engines>()
+                .Where(e => e != Engines.Player);
 
-            var missingEnumValues = enumValues.Where(enumValue => !classNames.Any(className => className.Contains(enumValue.ToString())));
-            Assert.IsFalse(missingEnumValues.Any(), $"Missing enum values in class names: {string.Join(", ", missingEnumValues)}");
+            var missingEnumValues = enumValues.Where(enumValue => !engines.Any(engine => engine.Engine == enumValue));
+            Assert.IsFalse(missingEnumValues.Any(), $"Missing enum values in classes: {string.Join(", ", missingEnumValues)}");
         }
-
 
         [TestMethod]
         public void TestMethod1()
