@@ -23,7 +23,6 @@ namespace TikTakToe.Engines.Engines.random
             SetPos(0);
             sw.Stop();
             return sw.ElapsedMilliseconds;
-
         }
 
         public int MakeMove(int move)
