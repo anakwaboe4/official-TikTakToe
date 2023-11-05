@@ -10,16 +10,15 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
     {
         public Core.Enums.Engines Engine => Core.Enums.Engines.PerfectOptemism;
 
-
         private int board;
-        static Hashtable boardScores = new Hashtable();
-        Stopwatch sw = new Stopwatch();
+        private static Hashtable boardScores = new Hashtable();
+        private var sw = new Stopwatch();
 
         public PerfectOpertunism()
         {
             CalculateAllMoves();
-
         }
+
         #region Public classes
         public int MakeMove(int move)
         {
@@ -57,6 +56,7 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
             }
             return bestMove;
         }
+
         public double Bench(int depth)
         {
             sw.Restart();
@@ -66,6 +66,7 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
             return sw.ElapsedMilliseconds;
         }
         #endregion
+
         #region Private classes
         private void CalculateAllMoves()
         {
@@ -83,7 +84,8 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
             AddBoardScore(board, scoreX);
 
         }
-        private (int,int) CaluclateAlfa( int board)
+
+        private (int, int) CaluclateAlfa(int board)
         {
             int score = Checkscore(board);
             if(score < 1000 && score > -1000)
@@ -93,7 +95,7 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
                 for(int i = 1; i < 10; i++)
                 {
                     int newboard = Domove(board, i);
-                    if (newboard != 0)
+                    if(newboard != 0)
                     {
                         (int scoreXtemp, int scoreOtemp) = CalculateBeta(newboard);
                         scoresX.Add(scoreXtemp);
@@ -104,10 +106,11 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
                 int scoreO = scoresO.Sum() / scoresO.Count;
                 AddBoardScore(board, scoreX);
                 return (scoreX, scoreO);
-                }
+            }
             return (score, score);
         }
-        private (int,int) CalculateBeta( int board)
+
+        private (int, int) CalculateBeta(int board)
         {
             int score = Checkscore(board);
             if(score < 1000 && score > -1000)
@@ -124,21 +127,23 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
                         scoresO.Add(scoreOtemp);
                     }
                 }
-                int scoreX = scoresX.Sum()/scoresX.Count();
+                int scoreX = scoresX.Sum() / scoresX.Count();
                 int scoreO = scoresO.Min();
-                AddBoardScore(board, - scoreO);
+                AddBoardScore(board, -scoreO);
                 return (scoreX, scoreO);
             }
             return (score, score);
         }
-        static void AddBoardScore(int board, int score)
+
+        private static void AddBoardScore(int board, int score)
         {
             if(!boardScores.ContainsKey(board))
             {
                 boardScores.Add(board, score);
             }
         }
-        static int GetScore(int board)
+
+        private static int GetScore(int board)
         {
             if(boardScores.ContainsKey(board))
             {
@@ -149,6 +154,7 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
                 throw new ArgumentOutOfRangeException("No legal board value");
             }
         }
+
         private int Domove(int board, int move)
         {
             int player = (int)(board / 1000000000) + 1;
@@ -204,8 +210,6 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
             if(boardState[2] == 2 && boardState[5] == 2 && boardState[8] == 2) { return -1000; }
             else return 0;
         }
-
-
         #endregion
     }
 }
