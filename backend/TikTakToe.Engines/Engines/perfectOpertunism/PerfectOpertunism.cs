@@ -141,10 +141,14 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
 
         private static void AddBoardScore(int board, int score)
         {
-            if(!boardScores.ContainsKey(board))
+            try
             {
-                boardScores.Add(board, score);
+                if(!boardScores.ContainsKey(board))
+                {
+                    boardScores.Add(board, score);
+                }
             }
+            catch { };
         }
 
         private static int GetScore(int board)
