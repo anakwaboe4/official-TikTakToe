@@ -61,7 +61,7 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
             return bestMove;
         }
 
-        public double Bench(int depth)
+        public double Bench()
         {
             sw.Restart();
             sw.Start();

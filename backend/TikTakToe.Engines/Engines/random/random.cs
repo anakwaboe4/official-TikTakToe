@@ -16,7 +16,7 @@ namespace TikTakToe.Engines.Engines.random
         private Stopwatch sw = new Stopwatch();
         private Random randomPicker = new Random();
 
-        public double Bench(int depth)
+        public double Bench()
         {
             sw.Restart();
             sw.Start();
