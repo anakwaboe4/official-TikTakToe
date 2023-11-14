@@ -13,16 +13,11 @@ namespace TikTakToe.Engines.Engines.random
         public Core.Enums.Engines Engine => Core.Enums.Engines.Random;
 
         private int board;
-        private Stopwatch sw = new Stopwatch();
         private Random randomPicker = new Random();
 
         public double Bench()
         {
-            sw.Restart();
-            sw.Start();
-            SetPos(0);
-            sw.Stop();
-            return sw.ElapsedMilliseconds;
+            return randomPicker.NextDouble();
         }
 
         public int MakeMove(int move)
