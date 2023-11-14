@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TikTakToe.Engines", "TikTak
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TikTakToe.EngineTestFramework", "EngineTestFramework\TikTakToe.EngineTestFramework.csproj", "{D55A1DCA-C795-4F38-AD43-5E4122890730}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TikTakToe.ConsoleTestApp", "TikTakToe.ConsoleTestApp\TikTakToe.ConsoleTestApp.csproj", "{558C1B50-35B7-4066-A327-C1CD88D35A6E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TikTakToe.ConsoleTestApp", "TikTakToe.ConsoleTestApp\TikTakToe.ConsoleTestApp.csproj", "{558C1B50-35B7-4066-A327-C1CD88D35A6E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TikTakToe.Tests", "TikTakToe.Tests", "{A8A7C6F7-86BD-4D85-A755-C93978FFDB2F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +50,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D55A1DCA-C795-4F38-AD43-5E4122890730} = {A8A7C6F7-86BD-4D85-A755-C93978FFDB2F}
+		{558C1B50-35B7-4066-A327-C1CD88D35A6E} = {A8A7C6F7-86BD-4D85-A755-C93978FFDB2F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BFC35E46-AAF2-4D69-B1B1-6D9B1E26D083}
