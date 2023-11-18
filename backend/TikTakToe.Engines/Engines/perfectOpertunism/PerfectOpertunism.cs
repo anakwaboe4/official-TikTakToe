@@ -12,7 +12,7 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
 
         private int board;
         private static Hashtable boardScores = new Hashtable();
-        private var sw = new Stopwatch();
+        private Stopwatch sw = new Stopwatch();
 
         public PerfectOpertunism()
         {
@@ -28,12 +28,15 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
             for(int i = 1; i <= 9; i++)
             {
                 int newBoard = Domove(board, i);
-                int score = GetScore(newBoard);
-
-                if(score > highestScore)
+                if(newBoard != 0)
                 {
-                    highestScore = score;
-                    bestMove = i;
+                    int score = GetScore(newBoard);
+
+                    if(score > highestScore)
+                    {
+                        highestScore = score;
+                        bestMove = i;
+                    }
                 }
             }
             return bestMove;
@@ -41,6 +44,7 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
 
         public int SetPos(int pos)
         {
+            board = pos;
             int highestScore = 0;
             int bestMove = 0;
             for(int i = 1; i <= 9; i++)

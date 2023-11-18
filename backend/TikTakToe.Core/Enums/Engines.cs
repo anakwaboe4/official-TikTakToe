@@ -3,6 +3,7 @@
     public enum Engines
     {
         Player = 0,
-        PerfectOptemism = 1,
+        Random = 1,
+        PerfectOptemism = 2,
     }
 }
