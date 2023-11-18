@@ -1,6 +1,8 @@
 ﻿// This is to manually test the Engines without needing to use the API
+using System.Collections;
 using System.Runtime.CompilerServices;
 using TikTakToe.Engines;
+using TikTakToe.Engines.Engines.perfectOpertunism;
 using TikTakToe.Engines.Engines.random;
 
 internal class Program
@@ -11,7 +13,7 @@ internal class Program
         //int[][] board = StringToMatrix(input);
         //PrintMatrix(board);
 
-        IEngine engine = new TikTakToe.Engines.Engines.random.random(); // create a IEngine with the class you would like to test
+        IEngine engine = new TikTakToe.Engines.Engines.perfectOpertunism.PerfectOpertunism(); // create a IEngine with the class you would like to test
         while(true)
         {
             Console.WriteLine("1 for move test, 2 for board test and 3 for benchtesting, the rest of the numbers can be used for costom test");
@@ -51,12 +53,17 @@ internal class Program
                         if(select != -1) pos = select;
                         int move = engine.SetPos(pos);
                         pos += (int)Math.Pow(10, move - 1);
+                        pos += 1000000000;
                         int[][] printboard = IntToMatrix(pos);
                         PrintMatrix(printboard);
                     }
                     break;
                 case 3:
                     Console.WriteLine(engine.Bench());
+                    break;
+                case 4:
+                    PerfectOpertunism temp = new PerfectOpertunism();
+                    temp.printHashTable();
                     break;
             }
         }

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Reflection.Metadata.Ecma335;
 using TikTakToe.Core.Boards;
+using static System.Net.Mime.MediaTypeNames;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TikTakToe.Engines.Engines.perfectOpertunism
@@ -11,7 +12,7 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
         public Core.Enums.Engines Engine => Core.Enums.Engines.PerfectOptemism;
 
         private int board;
-        private static Hashtable boardScores = new Hashtable();
+        public static Hashtable boardScores = new Hashtable();
         private Stopwatch sw = new Stopwatch();
 
         public PerfectOpertunism()
@@ -75,7 +76,16 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
         private void CalculateAllMoves()
         {
             List<int> scoresX = new List<int>();
-            Parallel.For(1, 10, i =>
+            //Parallel.For(1, 10, i =>
+            //{
+            //    int newboard = Domove(board, i);
+            //    if(newboard != 0)
+            //    {
+            //        (int scoreXtemp, int scoreOtemp) = CalculateBeta(newboard);
+            //        scoresX.Add(scoreXtemp);
+            //    }
+            //});
+            for( int i = 1; i < 10; i ++)
             {
                 int newboard = Domove(board, i);
                 if(newboard != 0)
@@ -83,7 +93,7 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
                     (int scoreXtemp, int scoreOtemp) = CalculateBeta(newboard);
                     scoresX.Add(scoreXtemp);
                 }
-            });
+            }
             int scoreX = scoresX.Max();
             AddBoardScore(board, scoreX);
 
@@ -91,6 +101,14 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
 
         private (int, int) CaluclateAlfa(int board)
         {
+            if (board == 21)
+            {
+                Console.WriteLine("idk");
+            }
+            if (board == 1000000021)
+            {
+                Console.WriteLine("didn't know it before");
+            }
             int score = Checkscore(board);
             if(score < 1000 && score > -1000)
             {
@@ -106,6 +124,7 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
                         scoresO.Add(scoreOtemp);
                     }
                 }
+                if(scoresO.Count == 0 || scoresX.Count == 0) return (0, 0);
                 int scoreX = scoresX.Max();
                 int scoreO = scoresO.Sum() / scoresO.Count;
                 AddBoardScore(board, scoreX);
@@ -116,6 +135,14 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
 
         private (int, int) CalculateBeta(int board)
         {
+            if(board == 21)
+            {
+                Console.WriteLine("idk");
+            }
+            if(board == 1000000021)
+            {
+                Console.WriteLine("didn't know it before");
+            }
             int score = Checkscore(board);
             if(score < 1000 && score > -1000)
             {
@@ -131,6 +158,7 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
                         scoresO.Add(scoreOtemp);
                     }
                 }
+                if (scoresO.Count == 0 || scoresX.Count == 0) return(0,0);
                 int scoreX = scoresX.Sum() / scoresX.Count();
                 int scoreO = scoresO.Min();
                 AddBoardScore(board, -scoreO);
@@ -143,6 +171,7 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
         {
             try
             {
+                if(board > 1000000000) board -= 1000000000;
                 if(!boardScores.ContainsKey(board))
                 {
                     boardScores.Add(board, score);
@@ -153,6 +182,7 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
 
         private static int GetScore(int board)
         {
+            if(board > 1000000000) board -= 1000000000;
             if(boardScores.ContainsKey(board))
             {
                 return (int)boardScores[board];
@@ -177,8 +207,8 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
             {
                 return 0;
             }
-            if(player == 1) board += 1000000;
-            else board -= 1000000;
+            if(player == 1) board += 1000000000;
+            else board -= 1000000000;
             return board;
         }
         private int Checkscore(int board)
@@ -219,5 +249,12 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
             else return 0;
         }
         #endregion
+        public void printHashTable()
+        {
+            foreach(DictionaryEntry entry in boardScores)
+            {
+                Console.WriteLine($"Key: {entry.Key}, Value: {entry.Value}");
+            }
+        }
     }
 }
