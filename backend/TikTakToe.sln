@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TikTakToe.API", "TikTakToe.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TikTakToe.Engines", "TikTakToe.Engines\TikTakToe.Engines.csproj", "{8453C128-F6C6-432E-971E-6A62F100E049}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TikTakToe.Services", "TikTakToe.Services\TikTakToe.Services.csproj", "{F816AFA7-734D-4ABA-ABA6-C2574DF3B551}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TikTakToe.Services", "TikTakToe.Services\TikTakToe.Services.csproj", "{F816AFA7-734D-4ABA-ABA6-C2574DF3B551}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TikTakToe.Repositories", "TikTakToe.Repositories\TikTakToe.Repositories.csproj", "{5492085C-1D1E-4D27-A084-EA140A20693E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{F816AFA7-734D-4ABA-ABA6-C2574DF3B551}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F816AFA7-734D-4ABA-ABA6-C2574DF3B551}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F816AFA7-734D-4ABA-ABA6-C2574DF3B551}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5492085C-1D1E-4D27-A084-EA140A20693E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5492085C-1D1E-4D27-A084-EA140A20693E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5492085C-1D1E-4D27-A084-EA140A20693E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5492085C-1D1E-4D27-A084-EA140A20693E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
