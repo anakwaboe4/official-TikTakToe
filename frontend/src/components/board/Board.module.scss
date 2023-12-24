@@ -1,0 +1,30 @@
+.container {
+    padding: 5%;
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+
+    .row {
+        flex: 1 0 auto;
+        display: flex;
+
+        .item {
+            flex: 1 0 auto;
+            display: flex;
+
+            .buttonEmpty {
+                flex: 1 0 auto;
+            }
+
+            .buttonFilled {
+                flex: 1 0 auto;
+                cursor: default;
+
+                .text {
+                    font-size: 30cqmin;
+                    margin: -1000px;
+                }
+            }
+        }
+    }
+}

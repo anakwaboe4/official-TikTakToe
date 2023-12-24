@@ -1,4 +1,4 @@
 export enum Tabs  {
-    Game,
-    Settings
+    Game = "0",
+    Settings = "1"
 }

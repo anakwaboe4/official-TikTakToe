@@ -1,7 +1,6 @@
 import { Button, SelectTabData, SelectTabEvent, Tab, TabList, Theme, webDarkTheme, webLightTheme } from "@fluentui/react-components"
 import { WeatherSunny16Filled, WeatherMoon16Regular } from "@fluentui/react-icons";
 import styles from "./TopBar.module.scss";
-import { useEffect } from "react";
 import { Tabs } from "../../models";
 
 export const TopBar = (props: {
@@ -22,28 +21,24 @@ export const TopBar = (props: {
         switch (theme) {
             default:
             case webLightTheme:
-                return <WeatherSunny16Filled />
-            case webDarkTheme:
                 return <WeatherMoon16Regular />
+            case webDarkTheme:
+                return <WeatherSunny16Filled />
         }
     }
-
-    // Effects
-    useEffect(() => {
-        getThemeIcon()
-    }, [selectedTab])
 
     return (
         <div className={styles.container}>
             <TabList selectedValue={selectedTab} onTabSelect={onSelectedTabChange} className={styles.center}>
-                <Tab id="Game" value={Tabs.Game}>
+                <Tab value={Tabs.Game}>
                     Game
                 </Tab>
-                <Tab id="Settings" value={Tabs.Settings}>
+                <Tab value={Tabs.Settings}>
                     Settings
                 </Tab>
             </TabList>
             <Button
+                appearance="subtle"
                 icon={getThemeIcon()}
                 className={styles.right}
                 onClick={toggleTheme}

@@ -1,0 +1,13 @@
+.container {
+    flex: 1 0 auto;
+    display: flex;
+
+    .board {
+        flex: 0 0 70%;
+        display: flex;
+    }
+
+    .sidebar {
+        flex: 0 0 30%;
+    }
+}
