@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { TopBar } from "..";
-import { SelectTabData, SelectTabEvent, Theme } from "@fluentui/react-components";
+import { SelectTabData,
+    SelectTabEvent,
+    Theme,
+    Toaster,
+    useId
+} from "@fluentui/react-components";
 import styles from "./Root.module.scss";
 import { Game, Settings } from "../../tabs";
 import { ISettings, Tabs } from "../../models";
@@ -21,6 +26,7 @@ export const Root = (props: {
     const [selectedTab, setSelectedTab] = useState<Tabs>(Tabs.Game);
     const settings: ISettings = {lengthX: 3, lengthY: 3, characters: ["X", "O"]} as ISettings;
     const webApiService: IWebApiService = new WebApiService("http://localhost/");
+    const mainToasterId = useId("mainToaster");
 
     // Functions
     const onSelectedTabChange = (event: SelectTabEvent, data: SelectTabData) => {
@@ -31,7 +37,8 @@ export const Root = (props: {
             case Tabs.Game:
                 return <Game
                         settings={settings}
-                        />
+                        toastControllerId={mainToasterId}
+                    />
             case Tabs.Settings:
                 return <Settings />
         }
@@ -39,6 +46,7 @@ export const Root = (props: {
 
     return (
         <WebApiContext.Provider value={webApiService}>
+            <Toaster toasterId={mainToasterId} />
             <div className={styles.container}>
                 <TopBar
                     theme={theme}

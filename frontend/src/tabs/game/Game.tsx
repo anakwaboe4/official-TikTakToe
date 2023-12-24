@@ -5,9 +5,11 @@ import { ISettings } from "../../models";
 
 export const Game = (props: {
     settings: ISettings;
+    toastControllerId: string;
 }) => {
     const {
         settings,
+        toastControllerId,
     } = props;
 
     const {
@@ -15,7 +17,7 @@ export const Game = (props: {
         currentPlayerId,
         makeMove,
         restart,
-    } = UseGame();
+    } = UseGame(toastControllerId);
 
     return (
         <div className={styles.container}>
