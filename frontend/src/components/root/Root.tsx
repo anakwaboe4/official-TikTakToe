@@ -40,7 +40,9 @@ export const Root = (props: {
                         toastControllerId={mainToasterId}
                     />
             case Tabs.Settings:
-                return <Settings />
+                return <Settings
+                        toastControllerId={mainToasterId}
+                    />
         }
     }
 
