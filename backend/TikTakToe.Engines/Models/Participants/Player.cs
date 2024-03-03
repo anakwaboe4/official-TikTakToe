@@ -1,10 +1,8 @@
-﻿using TikTakToe.Engines;
-
-namespace TikTakToe.Core.Participants
+﻿namespace TikTakToe.Engines.Models.Participants
 {
     public class Player : IEngine
     {
-        public Enums.Engines Engine => Enums.Engines.Player;
+        public Core.Enums.Engines Engine => Core.Enums.Engines.Player;
 
         public int MakeMove(int move)
         {

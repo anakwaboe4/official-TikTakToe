@@ -9,9 +9,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<TikTakToeContext>(options =>
-    options.UseSqlite("Data Source=Database.db"));
-builder.Services.AddSingleton<IGameService, GameService>();
+builder.Services.AddDbContext<TikTakToeContext>(//options =>
+    //options.UseSqlite("Data Source=Database.db")
+);
+builder.Services.AddScoped<IGameService, GameService>();
 
 var app = builder.Build();
 

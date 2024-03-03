@@ -1,6 +1,6 @@
 ﻿using TikTakToe.Core.Enums;
 
-namespace TikTakToe.Core.Boards
+namespace TikTakToe.Engines.Models.Boards
 {
     public class Board
     {

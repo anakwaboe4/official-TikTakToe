@@ -2,55 +2,64 @@
 using Swashbuckle.AspNetCore.Annotations;
 using TikTakToe.API.Models;
 using TikTakToe.API.Models.Games;
+using TikTakToe.Repositories.EntityFramework;
+using TikTakToe.Repositories.Models;
 using TikTakToe.Services;
 
 namespace TikTakToe.API.Controllers
 {
     public class GamesController : ControllerBase
     {
-        private IGameService _gameService;
+        private readonly IGameService _gameService;
 
         public GamesController(IGameService gameService)
         {
             _gameService = gameService;
         }
 
-        #region POST/games
+        #region POST/games/{gameId}
         [HttpPost]
         [Produces("application/json")]
         [SwaggerResponse(200, Type = typeof(GamesResponse))]
         [SwaggerResponse(400, Type = typeof(ErrorResponse))]
-        [Route("api/games")]
-        public ActionResult GamesGetAsync([FromBody] GamePostBody game)
+        [Route("api/games/{gameId}")]
+        public ActionResult GamesGetAsync([FromBody] GamePostBody? body, [FromRoute] Guid? gameId)
         {
             try
             {
-                _gameService.NewGame(
-                    game.ParticipantsIds,
-                    game.LengthX,
-                    game.LengthY);
-                return Ok(new GamesResponse() { Squares = _gameService.GetBoard()});
+                var game = new GameItem();
+
+                if(!gameId.HasValue || gameId.Value == Guid.Empty || body == null || !body.HasValue)
+                {
+                    game = _gameService.NewGame(body?.ParticipantsIds, body?.LengthX, body?.LengthY);
+                }
+                else
+                {
+                    game = _gameService.GetGame(gameId.Value);
+                }
+
+                return Ok(new GamesResponse() { Game = game });
             }
             catch(Exception)
             {
-                return BadRequest("Failed creating new game, check game settings");
+                return BadRequest("Failed to get (new) game, check game settings");
             }
         }
         #endregion
 
-        #region PUT/games/move
+        #region PUT/games/{gameId}/move
         [HttpPut]
         [Produces("application/json")]
         [SwaggerResponse(200, Type = typeof(GamesResponse))]
         [SwaggerResponse(400, Type = typeof(ErrorResponse))]
-        [Route("api/games/move")]
-        public ActionResult MakeMove([FromBody] MovePutBody move)
+        [Route("api/games/{gameId}/move")]
+        public ActionResult MakeMove([FromBody] MovePutBody move, [FromRoute] Guid gameId)
         {
             try
             {
                 _gameService.MakeMove(move.Position, move.Square);
 
-                return Ok(new GamesResponse() { Squares = _gameService.GetBoard() });
+                return Ok(new GamesResponse() { /*Squares = _gameService.GetBoard()*/ });
             }
             catch(Exception)
             {
@@ -59,13 +68,13 @@ namespace TikTakToe.API.Controllers
         }
         #endregion
 
-        #region PUT/games/aimove
+        #region PUT/games/{gameId}/aimove
         [HttpPut]
         [Produces("application/json")]
         [SwaggerResponse(200, Type = typeof(bool))]
         [SwaggerResponse(400, Type = typeof(ErrorResponse))]
-        [Route("api/games/aimove")]
-        public ActionResult MakeAiMove([FromBody] MoveAiPutBody move)
+        [Route("api/games/{gameId}/aimove")]
+        public ActionResult MakeAiMove([FromBody] MoveAiPutBody move, [FromRoute] Guid gameId)
         {
             try
             {

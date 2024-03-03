@@ -7,8 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="34zktky3.lj3~" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\TikTakToe.Core\TikTakToe.Core.csproj" />
     <ProjectReference Include="..\TikTakToe.Engines\TikTakToe.Engines.csproj" />
+    <ProjectReference Include="..\TikTakToe.Repositories\TikTakToe.Repositories.csproj" />
   </ItemGroup>
 
 </Project>

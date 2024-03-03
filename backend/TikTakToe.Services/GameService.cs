@@ -1,38 +1,70 @@
-﻿using TikTakToe.Core.Boards;
+﻿using Microsoft.EntityFrameworkCore;
 using TikTakToe.Core.Enums;
-using TikTakToe.Core.Participants;
 using TikTakToe.Engines;
+using TikTakToe.Engines.Models.Boards;
+using TikTakToe.Engines.Models.Participants;
+using TikTakToe.Repositories.EntityFramework;
+using TikTakToe.Repositories.Models;
 
 namespace TikTakToe.Services
 {
     public class GameService : IGameService
     {
+        private readonly TikTakToeContext _tikTakToeDbContext;
+
         public IEnumerable<IEngine> Participants { get; set; }
         public Board Board { get; set; }
 
-        public GameService()
+        public GameService(TikTakToeContext tikTakToeContext)
         {
+            _tikTakToeDbContext = tikTakToeContext;
             Participants = new List<IEngine>() { new Player(), new Player() };
             Board = new Board();
         }
 
-        public void NewGame()
+        public GameItem NewGame(List<Core.Enums.Engines>? engineIds = null, int? lengthX = null, int? lengthY = null)
         {
-            Participants = new List<IEngine>() { new Player(), new Player() };
-            Board = new Board();
+            if(engineIds == null || !engineIds.Any())
+            {
+                engineIds = new List<Core.Enums.Engines>()
+                {
+                    Core.Enums.Engines.Player,
+                    Core.Enums.Engines.Player,
+                };
+            }
+
+            lengthX ??= 3;
+            lengthY ??= 3;
+
+            var newGame = new GameItem()
+            {
+                GridSizeX = lengthX.Value,
+                GridSizeY = lengthY.Value,
+                Move = 0,
+                Engines = engineIds,
+                BoardSquares = new Squares[lengthX.Value * lengthY.Value].ToList(),
+                Moves = new List<MoveItem>(),
+            };
+
+            _tikTakToeDbContext.Games.Add(newGame);
+
+            return newGame;
         }
 
-        public void NewGame(List<Core.Enums.Engines> engineIds, int lengthX, int lengthY)
+        public GameItem? GetGame(Guid gameId)
         {
-            // Map enum to type
-            Participants = engineIds.Select(GetEngineFromId);
-            Board = new Board(lengthX, lengthY);
+            var game = _tikTakToeDbContext.Games
+                .Where(g => g.Id == gameId)
+                .Include(g => g.Moves)
+                .FirstOrDefault();
+
+            return game;
         }
 
         public bool CheckMove(int position)
         {
             // Check if int position is valid and if board position is empty
-            if (position < Board.BoardSquares.Count() &&
+            if(position < Board.BoardSquares.Count() &&
                 Board.BoardSquares[position] == Squares.Empty)
             {
                 return true;
@@ -45,7 +77,7 @@ namespace TikTakToe.Services
 
         public bool MakeMove(int position, Squares square)
         {
-            if (CheckMove(position))
+            if(CheckMove(position))
             {
                 Board.BoardSquares[position] = square;
                 Board.Move++;
@@ -71,10 +103,10 @@ namespace TikTakToe.Services
         public List<List<Squares>> GetBoard()
         {
             var returnBoard = new List<List<Squares>>();
-            for (int x = 0; x < Board.LengthX; x++)
+            for(int x = 0; x < Board.LengthX; x++)
             {
                 var row = new List<Squares>();
-                for (int y = 0; y < Board.LengthY; y++)
+                for(int y = 0; y < Board.LengthY; y++)
                 {
                     row.Add(Board.BoardSquares[x * Board.LengthX + y]);
                 }
@@ -86,13 +118,13 @@ namespace TikTakToe.Services
         public string PrintBoard()
         {
             string stringBoard = "";
-            for (int y = 0; y < Board.LengthY; y++)
+            for(int y = 0; y < Board.LengthY; y++)
             {
-                for (int x = 0; x < Board.LengthX; x++)
+                for(int x = 0; x < Board.LengthX; x++)
                 {
                     stringBoard += Board.BoardSquares[x + (y * Board.LengthX)] + "\t";
                 }
-                if (y != Board.LengthY - 1)
+                if(y != Board.LengthY - 1)
                     stringBoard += "\n";
             }
             return stringBoard;
@@ -118,7 +150,7 @@ namespace TikTakToe.Services
         {
             var board = participant * 100000000;
 
-            for (int i = 0, n = 1; i < Board.BoardSquares.Length; i++, n *= 10)
+            for(int i = 0, n = 1; i < Board.BoardSquares.Length; i++, n *= 10)
             {
                 board += (int)Board.BoardSquares[i] * n;
             }

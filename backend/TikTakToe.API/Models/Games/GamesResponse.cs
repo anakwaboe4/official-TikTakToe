@@ -1,9 +1,10 @@
 ﻿using TikTakToe.Core.Enums;
+using TikTakToe.Repositories.Models;
 
 namespace TikTakToe.API.Models.Games
 {
     public struct GamesResponse
     {
-        public List<List<Squares>> Squares { get; set; }
+        public GameItem? Game { get; set; }
     }
 }
