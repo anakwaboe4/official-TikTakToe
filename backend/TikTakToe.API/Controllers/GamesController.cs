@@ -2,6 +2,7 @@
 using Swashbuckle.AspNetCore.Annotations;
 using TikTakToe.API.Models;
 using TikTakToe.API.Models.Games;
+using TikTakToe.Core;
 using TikTakToe.Repositories.EntityFramework;
 using TikTakToe.Repositories.Models;
 using TikTakToe.Services;
@@ -83,6 +84,23 @@ namespace TikTakToe.API.Controllers
             catch(Exception)
             {
                 return BadRequest("Failed making move for AI, check game settings");
+            }
+        }
+
+        #region GET/games/avalibleengines
+        [HttpGet]
+        [Produces("application/json")]
+        [SwaggerResponse(200, Type = typeof(List<string>))]
+        [Route("api/games/avalibleengines")]
+        public ActionResult GetEngineDisplayNames()
+        {
+            try
+            {
+                return Ok(Globals.Engines.EnginesDisplayNames);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Failed to get engine display names");
             }
         }
         #endregion

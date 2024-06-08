@@ -25,4 +25,8 @@ export class WebApiService extends WebApiServiceBase implements IWebApiService {
 
         return response || {} as IMoveResponse;
     }
+    public async getAvailableEngines(): Promise<string[]> {
+        const response = await this.executeGet<string[]>("/games/availableengines");
+        return response || [];
+    }
 }
