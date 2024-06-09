@@ -56,6 +56,7 @@ internal class Program
                         pos += 1000000000;
                         int[][] printboard = IntToMatrix(pos);
                         PrintMatrix(printboard);
+                        Console.WriteLine("The position is: " + pos);
                     }
                     break;
                 case 3:

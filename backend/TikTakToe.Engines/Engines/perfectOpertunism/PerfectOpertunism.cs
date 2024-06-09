@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection.Metadata.Ecma335;
 using TikTakToe.Core.Boards;
@@ -20,7 +22,7 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
             CalculateAllMoves();
         }
 
-        #region Public classes
+        #region Public Methodes
         public int MakeMove(int move)
         {
             board = Domove(board, move);
@@ -72,11 +74,11 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
         }
         #endregion
 
-        #region Private classes
+        #region Private Methodes
         private void CalculateAllMoves()
         {
             List<int> scoresX = new List<int>();
-            //Parallel.For(1, 10, i =>
+                        //Parallel.For(1, 10, i =>
             //{
             //    int newboard = Domove(board, i);
             //    if(newboard != 0)
@@ -101,14 +103,6 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
 
         private (int, int) CaluclateAlfa(int board)
         {
-            if (board == 21)
-            {
-                Console.WriteLine("idk");
-            }
-            if (board == 1000000021)
-            {
-                Console.WriteLine("didn't know it before");
-            }
             int score = Checkscore(board);
             if(score < 1000 && score > -1000)
             {
@@ -135,14 +129,6 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
 
         private (int, int) CalculateBeta(int board)
         {
-            if(board == 21)
-            {
-                Console.WriteLine("idk");
-            }
-            if(board == 1000000021)
-            {
-                Console.WriteLine("didn't know it before");
-            }
             int score = Checkscore(board);
             if(score < 1000 && score > -1000)
             {
