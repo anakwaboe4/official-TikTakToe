@@ -26,12 +26,18 @@ internal class Program
                     boardMove[2] = new int[3];
                     while(IsBoardNotFilled(boardMove))
                     {
+                        int moveboardMove = 0;
+                        int row = 0;
+                        int col = 0;
                         Console.WriteLine("Give your square:");
                         int move = Int32.Parse(Console.ReadLine());
-                        int moveboardMove = move - 1;
-                        int row = moveboardMove / 3;
-                        int col = moveboardMove % 3;
-                        boardMove[row][col] = 1;
+                        if(move != -1)
+                        {
+                            moveboardMove = move - 1;
+                            row = moveboardMove / 3;
+                            col = moveboardMove % 3;
+                            boardMove[row][col] = 1;
+                        }
                         move = engine.MakeMove(move);
                         moveboardMove = move - 1;
                         row = moveboardMove / 3;

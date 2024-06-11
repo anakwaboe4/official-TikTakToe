@@ -25,7 +25,7 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
         #region Public Methodes
         public int MakeMove(int move)
         {
-            board = Domove(board, move);
+            if (move != -1) board = Domove(board, move);
             int highestScore = 0;
             int bestMove = 0;
             for(int i = 1; i <= 9; i++)
@@ -157,7 +157,7 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
         {
             try
             {
-                if(board > 1000000000) board -= 1000000000;
+                //if(board > 1000000000) board -= 1000000000;
                 if(!boardScores.ContainsKey(board))
                 {
                     boardScores.Add(board, score);
@@ -168,7 +168,7 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
 
         private static int GetScore(int board)
         {
-            if(board > 1000000000) board -= 1000000000;
+            //if(board > 1000000000) board -= 1000000000;
             if(boardScores.ContainsKey(board))
             {
                 return (int)boardScores[board];
