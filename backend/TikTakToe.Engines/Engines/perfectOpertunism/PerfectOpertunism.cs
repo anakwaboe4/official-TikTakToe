@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Reflection.Metadata.Ecma335;
 using TikTakToe.Core.Boards;
@@ -16,6 +17,7 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
         private int board;
         public static Hashtable boardScores = new Hashtable();
         private Stopwatch sw = new Stopwatch();
+        private DataTable treeTable = new DataTable();
 
         public PerfectOpertunism()
         {
@@ -72,11 +74,23 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
             sw.Stop();
             return sw.ElapsedMilliseconds;
         }
+
+        public DataTable GetTreeTable()
+        {
+            return treeTable;
+        }
         #endregion
 
         #region Private Methodes
         private void CalculateAllMoves()
         {
+            treeTable.Columns.Add("Key", typeof(int));
+            treeTable.Columns.Add("board", typeof(int));
+            treeTable.Columns.Add("listScoreX", typeof(List<int>));
+            treeTable.Columns.Add("listScoreO", typeof(List<int>));
+            treeTable.Columns.Add("scoreX", typeof(int));
+            treeTable.Columns.Add("scoreO", typeof(int));
+
             List<int> scoresX = new List<int>();
                         //Parallel.For(1, 10, i =>
             //{
@@ -92,7 +106,7 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
                 int newboard = Domove(board, i);
                 if(newboard != 0)
                 {
-                    (int scoreXtemp, int scoreOtemp) = CalculateBeta(newboard);
+                    (int scoreXtemp, int scoreOtemp) = CalculateBeta(newboard, i);
                     scoresX.Add(scoreXtemp);
                 }
             }
@@ -101,7 +115,7 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
 
         }
 
-        private (int, int) CaluclateAlfa(int board)
+        private (int, int) CaluclateAlfa(int board, int key)
         {
             int score = Checkscore(board);
             if(score < 1000 && score > -1000)
@@ -113,7 +127,8 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
                     int newboard = Domove(board, i);
                     if(newboard != 0)
                     {
-                        (int scoreXtemp, int scoreOtemp) = CalculateBeta(newboard);
+                        int sunKey = key * 10 + i;
+                        (int scoreXtemp, int scoreOtemp) = CalculateBeta(newboard, sunKey);
                         scoresX.Add(scoreXtemp);
                         scoresO.Add(scoreOtemp);
                     }
@@ -121,13 +136,14 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
                 if(scoresO.Count == 0 || scoresX.Count == 0) return (0, 0);
                 int scoreX = scoresX.Max();
                 int scoreO = scoresO.Sum() / scoresO.Count;
+                treeTable.Rows.Add(key, board, scoresX, scoresO, scoreX, scoreO);
                 AddBoardScore(board, scoreX);
                 return (scoreX, scoreO);
             }
             return (score, score);
         }
 
-        private (int, int) CalculateBeta(int board)
+        private (int, int) CalculateBeta(int board, int key)
         {
             int score = Checkscore(board);
             if(score < 1000 && score > -1000)
@@ -139,14 +155,16 @@ namespace TikTakToe.Engines.Engines.perfectOpertunism
                     int newboard = Domove(board, i);
                     if(newboard != 0)
                     {
-                        (int scoreXtemp, int scoreOtemp) = CaluclateAlfa(newboard);
+                        int sunKey = key * 10 + i;
+                        (int scoreXtemp, int scoreOtemp) = CaluclateAlfa(newboard, sunKey);
                         scoresX.Add(scoreXtemp);
                         scoresO.Add(scoreOtemp);
                     }
                 }
-                if (scoresO.Count == 0 || scoresX.Count == 0) return(0,0);
+                if(scoresO.Count == 0 || scoresX.Count == 0) return (0, 0);
                 int scoreX = scoresX.Sum() / scoresX.Count();
                 int scoreO = scoresO.Min();
+                treeTable.Rows.Add(key, board, scoresX, scoresO, scoreX, scoreO);
                 AddBoardScore(board, -scoreO);
                 return (scoreX, scoreO);
             }
