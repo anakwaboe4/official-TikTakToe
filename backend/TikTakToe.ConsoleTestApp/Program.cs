@@ -89,24 +89,93 @@ internal class Program
         //{
         //    printTreeNode(treeData, i);
         //}
-        printTreeNode(treeData, 1);
+
+        //printTreeNode(treeData, 1);
+
+        Dictionary<int, string> boardStrings = GenerateBoardStrings(treeData);
+        StreamWriter sw = new StreamWriter("tree.txt");
+        printTreeNodes(treeData, sw, boardStrings);
 
     }
-    private static void printTreeNode(DataTable treeData, int basekey, StreamWriter sw = null)
+    private static Dictionary<int, string> GenerateBoardStrings(DataTable treeData)
     {
-        try
+        Dictionary<int, string> boardStrings = new Dictionary<int, string>();
+        foreach(DataRow row in treeData.Rows)
         {
-            DataRow[] rows = treeData.Select($"key = {basekey}");
-            if (sw == null) printRowDataTable(rows[0], (int)Math.Floor(Math.Log10(basekey) + 1));
-            else printRowDataTableToFile(rows[0], (int)Math.Floor(Math.Log10(basekey) + 1), sw);
-            for(int i = 1; i < 10; i++)
+            int board = (int)row["board"];
+            int boardWihoutPlayer;
+            if(board > 1000000000) boardWihoutPlayer = board - 1000000000;
+            else boardWihoutPlayer = board;
+            if(!boardStrings.ContainsKey(boardWihoutPlayer))
             {
-                printTreeNode(treeData, basekey * 10 + i, sw);
+                StringBuilder sb = new StringBuilder();
+                int tabs = CountNonZeroDigits(boardWihoutPlayer);
+                int[][] boardMatrix = IntToMatrix(board);
+                sb.Append(MatrixToString(boardMatrix, tabs));
+                sb.Append(ToStringWithIndent(board.ToString(), tabs));
+                List<int> listScoreX = (List<int>)row["listScoreX"];
+                List<int> listScoreO = (List<int>)row["listScoreO"];
+                sb.Append(ToStringWithIndent("ScoresX: ", tabs));
+                foreach(int score in listScoreX)
+                {
+                    sb.Append(score + " ");
+                }
+                sb.AppendLine();
+                sb.Append(ToStringWithIndent("Best scoreX: " + row["scoreX"], tabs));
+                sb.Append(ToStringWithIndent("ScoresO: ", tabs));
+                foreach(int score in listScoreO)
+                {
+                    sb.Append(score + " ");
+                }
+                sb.AppendLine();
+                sb.Append(ToStringWithIndent("Best scoreO: " + row["scoreO"], tabs));
+                boardStrings.Add(boardWihoutPlayer, sb.ToString());
             }
         }
-        catch
+        return boardStrings;
+    }
+    private static int CountNonZeroDigits(int number)
+    {
+        int count = 0;
+        foreach(char digit in number.ToString())
         {
-            return;
+            if(digit != '0')
+            {
+                count++;
+            }
+        }
+        return count;
+    }
+    private static void printTreeNodes(DataTable treeData, StreamWriter sw = null, Dictionary<int, string> boardStrings = null)
+    {
+        List<int> keys = GenerateNumbers();
+        foreach(int key in keys)
+        {
+            DataRow[] rows = treeData.Select($"key = {key}");
+            printRowDataTableToFile(rows[0], (int)Math.Floor(Math.Log10(key) + 1), sw, boardStrings);
+        }
+
+
+    }
+    public static List<int> GenerateNumbers()
+    {
+        List<int> result = new List<int>();
+        for(int i = 1; i <= 9; i++)
+        {
+            DFS(i, i.ToString(), result);
+        }
+        return result;
+    }
+
+    private static void DFS(int start, string current, List<int> result)
+    {
+        result.Add(int.Parse(current));
+        for(int i = 1; i <= 9; i++)
+        {
+            if(!current.Contains(i.ToString()))
+            {
+                DFS(i, current + i, result);
+            }
         }
     }
     private static void printRowDataTable(DataRow row, int tabs)
@@ -139,34 +208,15 @@ internal class Program
         PrintWithIndent("Best scoreO: " + row["scoreO"], tabs);
     }
 
-    private static void printRowDataTableToFile(DataRow row, int tabs, StreamWriter sw)
+    private static void printRowDataTableToFile(DataRow row, int tabs, StreamWriter sw, Dictionary<int, string> boardStrings)
     {
         // first get the key and print it
         sw.WriteLine(ToStringWithIndent($"Key: {row["key"]}", tabs));
         // then we get the board value and use the IntToMatrix and PrintMatrix to print the board
         int board = (int)row["board"];
-        int[][] boardmatrix = IntToMatrix(board);
-        sw.WriteLine(MatrixToString(boardmatrix, tabs));
-        sw.WriteLine(ToStringWithIndent(board.ToString(), tabs));
-        // then we print the scoreLists for both X and O and the picked score for X and O
-        List<int> listScoreX = (List<int>)row["listScoreX"];
-        List<int> listScoreO = (List<int>)row["listScoreO"];
-        sw.WriteLine(ToStringWithIndent("ScoresX: ", tabs));
-        sw.Write(ToStringWithIndent("ScoresX: ", tabs));
-        foreach(int score in listScoreX)
-        {
-            sw.Write(score + " ");
-        }
-        sw.WriteLine();
-        sw.WriteLine(ToStringWithIndent("Best scoreX: " + row["scoreX"], tabs));
-        sw.WriteLine(ToStringWithIndent("ScoresO: ", tabs));
-        sw.Write(ToStringWithIndent("ScoresO: ", tabs));
-        foreach(int score in listScoreO)
-        {
-            sw.Write(score + " ");
-        }
-        sw.WriteLine();
-        sw.WriteLine(ToStringWithIndent("Best scoreO: " + row["scoreO"], tabs));
+        boardStrings.TryGetValue(board, out string boardString);
+        sw.WriteLine(boardString);
+
     }
 
     private static void PrintWithIndent(string message, int tabs)
