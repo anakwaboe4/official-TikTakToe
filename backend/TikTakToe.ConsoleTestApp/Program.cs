@@ -115,6 +115,7 @@ internal class Program
                 sb.Append(ToStringWithIndent(board.ToString(), tabs));
                 List<int> listScoreX = (List<int>)row["listScoreX"];
                 List<int> listScoreO = (List<int>)row["listScoreO"];
+                sb.AppendLine();
                 sb.Append(ToStringWithIndent("ScoresX: ", tabs));
                 foreach(int score in listScoreX)
                 {
@@ -122,6 +123,7 @@ internal class Program
                 }
                 sb.AppendLine();
                 sb.Append(ToStringWithIndent("Best scoreX: " + row["scoreX"], tabs));
+                sb.AppendLine();
                 sb.Append(ToStringWithIndent("ScoresO: ", tabs));
                 foreach(int score in listScoreO)
                 {
@@ -152,6 +154,7 @@ internal class Program
         foreach(int key in keys)
         {
             DataRow[] rows = treeData.Select($"key = {key}");
+            if(rows.Length == 0) continue;
             printRowDataTableToFile(rows[0], (int)Math.Floor(Math.Log10(key) + 1), sw, boardStrings);
         }
 
