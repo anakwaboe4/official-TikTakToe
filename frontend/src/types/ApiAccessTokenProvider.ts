@@ -1,0 +1,1 @@
+export type ApiAccessTokenProvider = () => Promise<string>;

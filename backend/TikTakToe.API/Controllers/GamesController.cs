@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using TikTakToe.API.Models;
 using TikTakToe.API.Models.Games;
@@ -86,17 +87,24 @@ namespace TikTakToe.API.Controllers
                 return BadRequest("Failed making move for AI, check game settings");
             }
         }
+        #endregion
 
-        #region GET/games/avalibleengines
+        #region GET/games/settings
         [HttpGet]
         [Produces("application/json")]
-        [SwaggerResponse(200, Type = typeof(List<string>))]
-        [Route("api/games/avalibleengines")]
-        public ActionResult GetEngineDisplayNames()
+        [SwaggerResponse(200, Type = typeof(SettingsResponse))]
+        [SwaggerResponse(400, Type = typeof(ErrorResponse))]
+        [Route("api/games/settings")]
+        public ActionResult GetSettings()
         {
             try
             {
-                return Ok(Globals.Engines.EnginesDisplayNames);
+                var response = new SettingsResponse()
+                {
+                    Engines = Globals.Engines.EnginesDisplayNames
+                };
+
+                return Ok(response);
             }
             catch (Exception)
             {

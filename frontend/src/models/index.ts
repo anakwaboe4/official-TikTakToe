@@ -5,3 +5,4 @@ export * from "./IGameResponse";
 export * from "./IMoveResponse";
 export * from "./IPlayerMoveRequest";
 export * from "./ISettings";
+export * from "./ISettingsResponse"

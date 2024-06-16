@@ -12,20 +12,23 @@ import { ISettings, Tabs } from "../../models";
 import { WebApiContext } from "../../context";
 import { IWebApiService } from "../../services/interfaces/IWebApiService";
 import { WebApiService } from "../../services/WebApiService";
+import { ApiAccessTokenProvider } from "../../types/ApiAccessTokenProvider";
 
 export const Root = (props: {
     theme: Theme,
-    toggleTheme: () => void
+    toggleTheme: () => void,
+    apiAccessTokenProvider: ApiAccessTokenProvider,
 }) => {
     const {
         theme,
-        toggleTheme
+        toggleTheme,
+        apiAccessTokenProvider,
     } = props;
 
     // State
     const [selectedTab, setSelectedTab] = useState<Tabs>(Tabs.Game);
     const settings: ISettings = {lengthX: 3, lengthY: 3, characters: ["X", "O"]} as ISettings;
-    const webApiService: IWebApiService = new WebApiService("http://localhost/");
+    const webApiService: IWebApiService = new WebApiService(apiAccessTokenProvider, process.env.REACT_APP_WEB_API_URL ?? "");
     const mainToasterId = useId("mainToaster");
 
     // Functions

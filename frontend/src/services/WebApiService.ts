@@ -1,4 +1,4 @@
-import { IGamePostBody, IGameResponse, IMoveResponse, IPlayerMoveRequest } from "../models";
+import { IGamePostBody, IGameResponse, IMoveResponse, IPlayerMoveRequest, ISettingsResponse } from "../models";
 import { WebApiServiceBase } from "./WebApiServiceBase";
 import { IWebApiService } from "./interfaces/IWebApiService";
 
@@ -25,8 +25,9 @@ export class WebApiService extends WebApiServiceBase implements IWebApiService {
 
         return response || {} as IMoveResponse;
     }
-    public async getAvailableEngines(): Promise<string[]> {
-        const response = await this.executeGet<string[]>("/games/availableengines");
-        return response || [];
+    public async getAvalibleSettings(): Promise<ISettingsResponse> {
+        const response = await this.executeGet<ISettingsResponse>("/games/settings");
+        
+        return response || {} as ISettingsResponse;
     }
 }

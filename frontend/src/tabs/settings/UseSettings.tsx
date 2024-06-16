@@ -2,11 +2,13 @@ import { useId, useToastController } from "@fluentui/react-components";
 import { useWebApi } from "../../context";
 import { DefaultToast, ProgressToast } from "../../components";
 import { useEffect, useState } from "react";
+import { ISettingsResponse } from "../../models";
 
 export const UseSettings = (
     toastControllerId: string,
 ): {
     saveSettings: () => void;
+    avalibleSettings: ISettingsResponse;
 } => {
     // Hooks
     const webApi = useWebApi();
@@ -17,7 +19,7 @@ export const UseSettings = (
     const savingSettingsToastId = useId("savingSettings", toastControllerId);
     
     // State
-    const [avalibleEngines, setAvalibleEngines] = useState<string[]>([]);
+    const [avalibleSettings, setAvalibleSettings] = useState<ISettingsResponse>({} as ISettingsResponse);
 
     // Functions
     const saveSettings = async () => {
@@ -61,14 +63,15 @@ export const UseSettings = (
 
     // Effects
     useEffect(() => {
-        const fetchAvalibleEngines = async () => {
+        const fetchAvalibleSettings = async () => {
             try {
-                const response = await webApi.getAvailableEngines();
-                setAvalibleEngines(response);
+                const response = await webApi.getAvalibleSettings();
+
+                setAvalibleSettings(response);
             } catch (error) {
                 dispatchToast(
                     <DefaultToast
-                        message="Something went wrong while calling the API"
+                        message={"Something went wrong while calling the API.\nError: " + (error as Error).message}
                     />,
                     {
                         intent: "error",
@@ -77,10 +80,11 @@ export const UseSettings = (
             }
         };
 
-        fetchAvalibleEngines();
+        fetchAvalibleSettings();
     }, []);
 
     return {
         saveSettings,
+        avalibleSettings,
     }
 }

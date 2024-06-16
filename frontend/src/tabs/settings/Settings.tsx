@@ -13,7 +13,8 @@ export const Settings = (props: {
     } = props;
 
     const {
-        saveSettings
+        saveSettings,
+        avalibleSettings,
     } = UseSettings(toastControllerId);
 
     return (
@@ -28,7 +29,9 @@ export const Settings = (props: {
                 }}
             >
                 {/*<center><Label onClick={saveSettings} size="large" weight="semibold">TicTacToe Settings</Label></center>*/}
-                <GameSettingForm />
+                <GameSettingForm
+                    avalibleSettings={avalibleSettings}
+                />
                 {/*<Divider appearance="strong"><Label onClick={saveSettings} weight="semibold">Global Settings</Label></Divider>*/}
             </div>
         </div>

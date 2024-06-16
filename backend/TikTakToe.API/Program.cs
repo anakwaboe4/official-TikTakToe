@@ -1,27 +1,46 @@
 using Microsoft.EntityFrameworkCore;
+using TikTakToe.API.Setup;
 using TikTakToe.Repositories.EntityFramework;
 using TikTakToe.Services;
 
+var corsPolicy = "CorsPolicy";
+
 var builder = WebApplication.CreateBuilder(args);
+
+var config = builder.Configuration;
 
 // Add services to the container.
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.BuildAuthenticationSetup(config);
+builder.BuildSwaggerSetup(config);
 builder.Services.AddDbContext<TikTakToeContext>(//options =>
-    //options.UseSqlite("Data Source=Database.db")
+                                                //options.UseSqlite("Data Source=Database.db")
 );
 builder.Services.AddScoped<IGameService, GameService>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: corsPolicy,
+        policy =>
+        {
+            policy
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        });
+});
 var app = builder.Build();
 
+app.UseSwaggerSetup(config, true);
+
 // Configure the HTTP request pipeline.
-if(app.Environment.IsDevelopment())
+/*if(app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+}*/
 
 using(var scope = app.Services.CreateScope())
 {
@@ -34,7 +53,9 @@ using(var scope = app.Services.CreateScope())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+app.UseCors(corsPolicy);
+
+app.UseAuthenticationSetup();
 
 app.MapControllers();
 

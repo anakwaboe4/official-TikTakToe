@@ -1,7 +1,9 @@
+import { ApiAccessTokenProvider } from "../types/ApiAccessTokenProvider";
 import { ErrorResponse } from "../models";
 
 export abstract class WebApiServiceBase {
     constructor(
+        private apiAccessTokenProvider: ApiAccessTokenProvider,
         private apiEndpoint: string
     ) { }
 
@@ -14,6 +16,9 @@ export abstract class WebApiServiceBase {
     }
 
     protected async executeRequest<T>(action: string, method: string, controller?: AbortController, parameters?: string, asString?: boolean, body?: string | FormData): Promise<T | void> {
+        // Fetch authentication token
+        const accessToken = await this.apiAccessTokenProvider();
+
         // Build URL
         let urlPathName = `${this.apiEndpoint}${action}`;
         if (parameters) {
@@ -21,7 +26,7 @@ export abstract class WebApiServiceBase {
         }
 
         // Build headers
-        const headers: HeadersInit = { Accept: asString ? "text/plain" : "application/json" }
+        const headers: HeadersInit = { Accept: asString ? "text/plain" : "application/json", Authorization: `Bearer ${accessToken}` }
         if (!(body instanceof FormData)) {
             headers["Content-Type"] = "application/json";
         }

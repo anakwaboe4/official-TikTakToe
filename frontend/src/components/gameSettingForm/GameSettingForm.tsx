@@ -2,12 +2,13 @@ import { Divider, Dropdown, Field, Label, SpinButton, Option } from "@fluentui/r
 import { UseGameSettingForm } from "./UseGameSettingForm";
 import styles from "./GameSettingForm.module.scss";
 import { useEffect, useState } from "react";
+import { ISettingsResponse } from "../../models";
 
 export const GameSettingForm = (props: {
-    
+    avalibleSettings: ISettingsResponse,
 }) => {
     const {
-        
+        avalibleSettings,
     } = props;
 
     const {
@@ -19,18 +20,36 @@ export const GameSettingForm = (props: {
         onLengthYChange,
     } = UseGameSettingForm();
 
-    const [playerNames, setPlayerNames] = useState(Array(playerCount).fill(''));
+    const [playerNames, setPlayerNames] = useState<string[]>(Array(playerCount).fill(undefined));
 
     const handlePlayerNameChange = (index: number, newName: string) => {
-        const newPlayerNames = [...playerNames];
-        newPlayerNames[index] = newName;
-        setPlayerNames(newPlayerNames);
+        if (avalibleSettings.engines && !(avalibleSettings.engines.includes(newName))) {
+            const newPlayerNames = [...playerNames];
+            newPlayerNames[index] = newName;
+            setPlayerNames(newPlayerNames);
+        }
     };
 
     // Update playerNames array whenever playerCount changes
     useEffect(() => {
-        setPlayerNames(Array(playerCount).fill(''));
+        setPlayerNames((prevPlayerNames) => {
+            const newPlayerNames = [...prevPlayerNames];
+            if (newPlayerNames.length < playerCount) {
+                for (let i = newPlayerNames.length; i < playerCount; i++) {
+                    newPlayerNames.push(avalibleSettings.engines && avalibleSettings.engines.length > 0 ? avalibleSettings.engines[0] : "");
+                }
+            } else if (newPlayerNames.length > playerCount) {
+                newPlayerNames.splice(playerCount);
+            }
+            return newPlayerNames;
+        });
     }, [playerCount]);
+
+    useEffect(() => {
+        if(avalibleSettings.engines && avalibleSettings.engines.length > 0) {
+            setPlayerNames(Array(playerCount).fill(avalibleSettings.engines[0]));
+        }
+    }, [avalibleSettings]);
 
     const options = [
         "Cat",
@@ -46,7 +65,7 @@ export const GameSettingForm = (props: {
     ];
 
     const disabledOptions = [
-        "Ferret",
+        "Default",
     ];
 
     return (
@@ -78,10 +97,21 @@ export const GameSettingForm = (props: {
                         <Field
                             label={"Player " + (i + 1)}
                             style={{ maxWidth: "400px" }}
+                            validationState={!playerNames[i] || !(playerNames[i].length > 0) ? "error" : undefined}
+                            validationMessage={!playerNames[i] || !(playerNames[i].length > 0) ? "Select an option." : undefined}
                         >
-                            <Dropdown>
-                                {options.map((option) => (
-                                    <Option key={option} disabled={disabledOptions.includes(option)}>
+                            <Dropdown
+                                value={playerNames[i]}
+                                defaultValue={avalibleSettings.engines && avalibleSettings.engines.length > 0 ? avalibleSettings.engines[0] : ""}
+                                selectedOptions={avalibleSettings.engines}
+                                onOptionSelect={(_, data) => handlePlayerNameChange(i, data.optionValue as string)}
+                                disabled={!avalibleSettings.engines || avalibleSettings.engines.length === 0}
+                            >
+                                {avalibleSettings.engines && avalibleSettings.engines.map((option) => (
+                                    <Option
+                                        key={option}
+                                        disabled={disabledOptions.includes(option)}
+                                    >
                                         {option}
                                     </Option>
                                 ))}

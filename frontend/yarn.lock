@@ -8711,6 +8711,13 @@ ms@2.1.3, ms@^2.1.1:
   resolved "https://registry.npmjs.org/ms/-/ms-2.1.3.tgz"
   integrity sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
 
+msal@1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/msal/-/msal-1.4.0.tgz#7e6e053a8cd3fd5b693e2f9504737f0c2b1219d4"
+  integrity sha512-NTxMFQh6t5g2QWMlvZTWTxL1bmcqiCv0cs2lxTHhUbWEuxWCfvaVRZfjxN8i+T0VltVVGaVIdML8QEoBnlbaSw==
+  dependencies:
+    tslib "^1.9.3"
+
 multicast-dns@^7.2.5:
   version "7.2.5"
   resolved "https://registry.npmjs.org/multicast-dns/-/multicast-dns-7.2.5.tgz"
@@ -11437,7 +11444,7 @@ tsconfig-paths@^3.14.2:
     minimist "^1.2.6"
     strip-bom "^3.0.0"
 
-tslib@^1.8.1:
+tslib@^1.8.1, tslib@^1.9.3:
   version "1.14.1"
   resolved "https://registry.npmjs.org/tslib/-/tslib-1.14.1.tgz"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
