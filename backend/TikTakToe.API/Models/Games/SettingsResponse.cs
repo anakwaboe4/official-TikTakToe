@@ -3,5 +3,6 @@
     public struct SettingsResponse
     {
         public List<string> Engines { get; set; }
+        public List<string> DisabledEngines { get; set; }
     }
 }

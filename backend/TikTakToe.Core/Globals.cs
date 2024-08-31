@@ -17,6 +17,10 @@
                 "Player",
                 "PerfectOptemism",
             };
+            public static readonly List<string> DisabledEnginesDisplayNames = new List<string>
+            {
+                
+            };
         }
     }
 }

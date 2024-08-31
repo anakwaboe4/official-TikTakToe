@@ -1,4 +1,4 @@
-import { Divider, Dropdown, Field, Label, SpinButton, Option } from "@fluentui/react-components";
+import { Divider, Dropdown, Field, Label, SpinButton, Option, Select } from "@fluentui/react-components";
 import { UseGameSettingForm } from "./UseGameSettingForm";
 import styles from "./GameSettingForm.module.scss";
 import { useEffect, useState } from "react";
@@ -20,17 +20,20 @@ export const GameSettingForm = (props: {
         onLengthYChange,
     } = UseGameSettingForm();
 
-    const [playerNames, setPlayerNames] = useState<string[]>(Array(playerCount).fill(undefined));
-
-    const handlePlayerNameChange = (index: number, newName: string) => {
-        if (avalibleSettings.engines && !(avalibleSettings.engines.includes(newName))) {
-            const newPlayerNames = [...playerNames];
-            newPlayerNames[index] = newName;
-            setPlayerNames(newPlayerNames);
-        }
+    const [playerNames, setPlayerNames] = useState<string[]>(Array(playerCount).fill(avalibleSettings?.engines ? avalibleSettings?.engines?.[0] : ""));
+    
+    const handleSelectChange = (index: number, event: any) => {
+        const newPlayerNames = [...playerNames];
+        newPlayerNames[index] = event.target.value;
+        setPlayerNames(newPlayerNames);
     };
 
-    // Update playerNames array whenever playerCount changes
+    useEffect(() => {
+        if(avalibleSettings?.engines && avalibleSettings?.engines.length > 0) {
+            setPlayerNames(Array(playerCount).fill(avalibleSettings?.engines[0]));
+        }
+    }, [avalibleSettings]);
+
     useEffect(() => {
         setPlayerNames((prevPlayerNames) => {
             const newPlayerNames = [...prevPlayerNames];
@@ -44,29 +47,6 @@ export const GameSettingForm = (props: {
             return newPlayerNames;
         });
     }, [playerCount]);
-
-    useEffect(() => {
-        if(avalibleSettings.engines && avalibleSettings.engines.length > 0) {
-            setPlayerNames(Array(playerCount).fill(avalibleSettings.engines[0]));
-        }
-    }, [avalibleSettings]);
-
-    const options = [
-        "Cat",
-        "Caterpillar",
-        "Corgi",
-        "Chupacabra",
-        "Dog",
-        "Ferret",
-        "Fish",
-        "Fox",
-        "Hamster",
-        "Snake",
-    ];
-
-    const disabledOptions = [
-        "Default",
-    ];
 
     return (
         <>
@@ -100,43 +80,48 @@ export const GameSettingForm = (props: {
                             validationState={!playerNames[i] || !(playerNames[i].length > 0) ? "error" : undefined}
                             validationMessage={!playerNames[i] || !(playerNames[i].length > 0) ? "Select an option." : undefined}
                         >
-                            <Dropdown
+                            <Select
+                                key={i}
                                 value={playerNames[i]}
-                                defaultValue={avalibleSettings.engines && avalibleSettings.engines.length > 0 ? avalibleSettings.engines[0] : ""}
-                                selectedOptions={avalibleSettings.engines}
-                                onOptionSelect={(_, data) => handlePlayerNameChange(i, data.optionValue as string)}
-                                disabled={!avalibleSettings.engines || avalibleSettings.engines.length === 0}
+                                defaultValue={avalibleSettings?.engines ? avalibleSettings?.engines?.[0] : undefined}
+                                onChange={(event) => handleSelectChange(i, event)}
+                                disabled={avalibleSettings?.engines?.length === 0}
                             >
-                                {avalibleSettings.engines && avalibleSettings.engines.map((option) => (
-                                    <Option
-                                        key={option}
-                                        disabled={disabledOptions.includes(option)}
+                                {avalibleSettings?.engines?.map(option => (
+                                    <option
+                                        key={option + i}
+                                        value={option}
+                                        disabled={avalibleSettings?.disabledEngines?.includes(option)}
                                     >
                                         {option}
-                                    </Option>
+                                    </option>
                                 ))}
-                            </Dropdown>
-                        </Field>
+                            </Select>
+                        </Field>  
                     ))}
                 </div>
                 <Field
                     label="With of the board"
+                    hint="Minumum 2 squares, maximum 6 squares."
                 >
                     <SpinButton
                         style={{ maxWidth: "100px" }}
                         value={lengthX}
                         onChange={(_, data) => onLengthXChange(data.value)}
-                        min={1}
+                        min={2}
+                        max={6}
                     />
                 </Field>
                 <Field
                     label="Height of the board"
+                    hint="Minumum 2 squares, maximum 6 squares."
                 >
                     <SpinButton
                         style={{ maxWidth: "100px" }}
                         value={lengthY}
                         onChange={(_, data) => onLengthYChange(data.value)}
-                        min={1}
+                        min={2}
+                        max={6}
                     />
                 </Field>
             </div>

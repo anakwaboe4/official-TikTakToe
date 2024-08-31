@@ -101,7 +101,8 @@ namespace TikTakToe.API.Controllers
             {
                 var response = new SettingsResponse()
                 {
-                    Engines = Globals.Engines.EnginesDisplayNames
+                    Engines = Globals.Engines.EnginesDisplayNames,
+                    DisabledEngines = Globals.Engines.DisabledEnginesDisplayNames
                 };
 
                 return Ok(response);
