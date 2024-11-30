@@ -1,4 +1,4 @@
-import { Divider, Dropdown, Field, Label, SpinButton, Option, Select } from "@fluentui/react-components";
+import { Divider, Dropdown, Field, Label, SpinButton, Option, Select, Persona } from "@fluentui/react-components";
 import { UseGameSettingForm } from "./UseGameSettingForm";
 import styles from "./GameSettingForm.module.scss";
 import { useEffect, useState } from "react";
@@ -20,12 +20,14 @@ export const GameSettingForm = (props: {
         onLengthYChange,
     } = UseGameSettingForm();
 
-    const [playerNames, setPlayerNames] = useState<string[]>(Array(playerCount).fill(avalibleSettings?.engines ? avalibleSettings?.engines?.[0] : ""));
+    const [playerNames, setPlayerNames] = useState<string[]>(Array(2).fill(avalibleSettings?.engines ? avalibleSettings?.engines?.[0] : ""));
     
-    const handleSelectChange = (index: number, event: any) => {
-        const newPlayerNames = [...playerNames];
-        newPlayerNames[index] = event.target.value;
-        setPlayerNames(newPlayerNames);
+    const handlePlayerNameChange = (index: number, newName: string) => {
+        if (avalibleSettings.engines && (avalibleSettings.engines.includes(newName))) {
+            let newPlayerNames = [...playerNames];
+            newPlayerNames[index] = newName;
+            setPlayerNames(newPlayerNames);
+        }
     };
 
     useEffect(() => {
@@ -33,20 +35,6 @@ export const GameSettingForm = (props: {
             setPlayerNames(Array(playerCount).fill(avalibleSettings?.engines[0]));
         }
     }, [avalibleSettings]);
-
-    useEffect(() => {
-        setPlayerNames((prevPlayerNames) => {
-            const newPlayerNames = [...prevPlayerNames];
-            if (newPlayerNames.length < playerCount) {
-                for (let i = newPlayerNames.length; i < playerCount; i++) {
-                    newPlayerNames.push(avalibleSettings.engines && avalibleSettings.engines.length > 0 ? avalibleSettings.engines[0] : "");
-                }
-            } else if (newPlayerNames.length > playerCount) {
-                newPlayerNames.splice(playerCount);
-            }
-            return newPlayerNames;
-        });
-    }, [playerCount]);
 
     return (
         <>
@@ -68,37 +56,29 @@ export const GameSettingForm = (props: {
                         onChange={(_, data) => onPlayerCountChange(data.value)}
                         min={2}
                         max={4}
+                        disabled={true}
                     />
                 </Field>
                 <div
                     className={styles.playerSelectors}
                 >
-                    {Array.from({ length: playerCount }, (_, i) => (
-                        <Field
-                            label={"Player " + (i + 1)}
-                            style={{ maxWidth: "400px" }}
-                            validationState={!playerNames[i] || !(playerNames[i].length > 0) ? "error" : undefined}
-                            validationMessage={!playerNames[i] || !(playerNames[i].length > 0) ? "Select an option." : undefined}
-                        >
-                            <Select
-                                key={i}
-                                value={playerNames[i]}
-                                defaultValue={avalibleSettings?.engines ? avalibleSettings?.engines?.[0] : undefined}
-                                onChange={(event) => handleSelectChange(i, event)}
-                                disabled={avalibleSettings?.engines?.length === 0}
+                    <Dropdown
+                        value={playerNames[0]}
+                        selectedOptions={[playerNames[0]]}
+                        onOptionSelect={(_, data) => handlePlayerNameChange(0, data.optionValue as string)}
+                        disabled={!avalibleSettings.engines || avalibleSettings.engines.length === 0}
+                    >
+                        {avalibleSettings.engines && avalibleSettings.engines.map((option) => (
+                            <Option
+                                key={option}
+                                text={option}
+                                value={option}
+                                disabled={avalibleSettings?.disabledEngines?.includes(option)}
                             >
-                                {avalibleSettings?.engines?.map(option => (
-                                    <option
-                                        key={option + i}
-                                        value={option}
-                                        disabled={avalibleSettings?.disabledEngines?.includes(option)}
-                                    >
-                                        {option}
-                                    </option>
-                                ))}
-                            </Select>
-                        </Field>  
-                    ))}
+                                {option}
+                            </Option>
+                        ))}
+                    </Dropdown>
                 </div>
                 <Field
                     label="With of the board"
