@@ -1,19 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
   <ItemGroup>
     <None Remove="34zktky3.lj3~" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\TikTakToe.Core\TikTakToe.Core.csproj" />
     <ProjectReference Include="..\TikTakToe.Engines\TikTakToe.Engines.csproj" />
     <ProjectReference Include="..\TikTakToe.Repositories\TikTakToe.Repositories.csproj" />
   </ItemGroup>
-
 </Project>
