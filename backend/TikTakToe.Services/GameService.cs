@@ -36,15 +36,7 @@ namespace TikTakToe.Services
             lengthX ??= 3;
             lengthY ??= 3;
 
-            var newGame = new GameItem()
-            {
-                GridSizeX = lengthX.Value,
-                GridSizeY = lengthY.Value,
-                Move = 0,
-                Engines = engineIds,
-                BoardSquares = new Squares[lengthX.Value * lengthY.Value].ToList(),
-                Moves = new List<MoveItem>(),
-            };
+            var newGame = new GameItem(lengthX.Value, lengthY.Value, engineIds, new Squares[lengthX.Value * lengthY.Value].ToList());
 
             _tikTakToeDbContext.Games.Add(newGame);
 

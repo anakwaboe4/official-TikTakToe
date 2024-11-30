@@ -7,7 +7,6 @@ namespace TikTakToe.Repositories.Models
     public class MoveItem
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid MoveId { get; set; }
         public int Index { get; set; }
         public Squares Square { get; set; }

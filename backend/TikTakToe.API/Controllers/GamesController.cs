@@ -29,7 +29,7 @@ namespace TikTakToe.API.Controllers
         {
             try
             {
-                var game = new GameItem();
+                var game = default(GameItem);
 
                 if(!gameId.HasValue || gameId.Value == Guid.Empty || body == null || !body.HasValue)
                 {
