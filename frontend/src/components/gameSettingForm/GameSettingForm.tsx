@@ -62,23 +62,48 @@ export const GameSettingForm = (props: {
                 <div
                     className={styles.playerSelectors}
                 >
-                    <Dropdown
-                        value={playerNames[0]}
-                        selectedOptions={[playerNames[0]]}
-                        onOptionSelect={(_, data) => handlePlayerNameChange(0, data.optionValue as string)}
-                        disabled={!avalibleSettings.engines || avalibleSettings.engines.length === 0}
+                    <Field
+                        label="Player 1"
                     >
-                        {avalibleSettings.engines && avalibleSettings.engines.map((option) => (
-                            <Option
-                                key={option}
-                                text={option}
-                                value={option}
-                                disabled={avalibleSettings?.disabledEngines?.includes(option)}
-                            >
-                                {option}
-                            </Option>
-                        ))}
-                    </Dropdown>
+                        <Dropdown
+                            value={playerNames[0]}
+                            selectedOptions={[playerNames[0]]}
+                            onOptionSelect={(_, data) => handlePlayerNameChange(0, data.optionValue as string)}
+                            disabled={!avalibleSettings.engines || avalibleSettings.engines.length === 0}
+                        >
+                            {avalibleSettings.engines && avalibleSettings.engines.map((option) => (
+                                <Option
+                                    key={option}
+                                    text={option}
+                                    value={option}
+                                    disabled={avalibleSettings?.disabledEngines?.includes(option)}
+                                >
+                                    {option}
+                                </Option>
+                            ))}
+                        </Dropdown>
+                    </Field>
+                    <Field
+                        label="Player 2"
+                    >
+                        <Dropdown
+                            value={playerNames[1]}
+                            selectedOptions={[playerNames[1]]}
+                            onOptionSelect={(_, data) => handlePlayerNameChange(1, data.optionValue as string)}
+                            disabled={!avalibleSettings.engines || avalibleSettings.engines.length === 0}
+                        >
+                            {avalibleSettings.engines && avalibleSettings.engines.map((option) => (
+                                <Option
+                                    key={option}
+                                    text={option}
+                                    value={option}
+                                    disabled={avalibleSettings?.disabledEngines?.includes(option)}
+                                >
+                                    {option}
+                                </Option>
+                            ))}
+                        </Dropdown>
+                    </Field>
                 </div>
                 <Field
                     label="With of the board"
