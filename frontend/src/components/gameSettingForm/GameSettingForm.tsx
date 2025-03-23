@@ -18,23 +18,9 @@ export const GameSettingForm = (props: {
         onLengthXChange,
         lengthY,
         onLengthYChange,
-    } = UseGameSettingForm();
-
-    const [playerNames, setPlayerNames] = useState<string[]>(Array(2).fill(avalibleSettings?.engines ? avalibleSettings?.engines?.[0] : ""));
-    
-    const handlePlayerNameChange = (index: number, newName: string) => {
-        if (avalibleSettings.engines && (avalibleSettings.engines.includes(newName))) {
-            let newPlayerNames = [...playerNames];
-            newPlayerNames[index] = newName;
-            setPlayerNames(newPlayerNames);
-        }
-    };
-
-    useEffect(() => {
-        if(avalibleSettings?.engines && avalibleSettings?.engines.length > 0) {
-            setPlayerNames(Array(playerCount).fill(avalibleSettings?.engines[0]));
-        }
-    }, [avalibleSettings]);
+        playerNames,
+        handlePlayerNameChange,
+    } = UseGameSettingForm(avalibleSettings);
 
     return (
         <>
