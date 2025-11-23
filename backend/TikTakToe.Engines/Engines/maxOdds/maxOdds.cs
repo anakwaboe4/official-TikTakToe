@@ -18,7 +18,7 @@ namespace TikTakToe.Engines.Engines.maxOdds
 
         public double Bench(int depth)
         {
-            if(depth != 0) throw new NotImplementedException("Bench with depth not implemented in random engine.");
+            if(depth != 0) throw new NotImplementedException("Bench with depth not implemented in MaxOdds engine.");
             sw.Restart();
             sw.Start();
             _ = MakeMove(new int[3, 3], 1);
