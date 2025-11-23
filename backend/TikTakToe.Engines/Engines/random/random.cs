@@ -25,8 +25,8 @@ namespace TikTakToe.Engines.Engines.random
             return sw.ElapsedMilliseconds;
         }
 
-        // returns new board and next player
-        public int[,] MakeMove(int[,] board, int nextPlayer, int depth = 0)
+        // returns new board and an integer score (random engine returns 0)
+        public (int[,] board, int score) MakeMove(int[,] board, int nextPlayer, int depth = 0)
         {
             if (depth != 0) throw new NotImplementedException("MakeMove with depth not implemented in random engine.");
             int[,] currentBoard = (int[,])board.Clone();
@@ -48,7 +48,9 @@ namespace TikTakToe.Engines.Engines.random
             }
             var (row, col) = availableMoves[randomPicker.Next(availableMoves.Count)];
             currentBoard[row, col] = currentPlayer;
-            return (int[,])currentBoard.Clone();
+            // score is random number between -1000 and 1000
+            int score = randomPicker.Next(-1000, 1001);
+            return ((int[,])currentBoard.Clone(), score);
 
         }
     }
