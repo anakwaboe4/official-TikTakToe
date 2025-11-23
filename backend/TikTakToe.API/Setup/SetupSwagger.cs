@@ -1,5 +1,4 @@
-﻿using Microsoft.OpenApi.Models;
-using System.Reflection;
+﻿using Microsoft.OpenApi;
 using TikTakToe.Core;
 
 namespace TikTakToe.API.Setup
@@ -12,6 +11,7 @@ namespace TikTakToe.API.Setup
             var tenantId = configuration.GetValue<string>(Globals.AppSettings.TenantId);
             var audience = configuration.GetValue<string>(Globals.AppSettings.ClientAppUri);
 
+            builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc(
@@ -39,20 +39,16 @@ namespace TikTakToe.API.Setup
                         }
                     }
                 });
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2" }
-                        },
-                        new[] { configuration["ApiScope"] }
-                    }
-                });
-
-                // using System.Reflection;
-                //var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                //c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+                //c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                //{
+                //    {
+                //        new OpenApiSecurityScheme
+                //        {
+                //            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2" }
+                //        },
+                //        new[] { configuration["ApiScope"] }
+                //    }
+                //});
             });
         }
         public static void UseSwaggerSetup(this WebApplication app, IConfiguration configuration, bool isDevelop = true)
