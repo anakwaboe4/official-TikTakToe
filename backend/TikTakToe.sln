@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.1.32210.238
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11217.181 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TikTakToe.Core", "TikTakToe.Core\TikTakToe.Core.csproj", "{9A656686-F999-4224-8ED0-773522B04D23}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TikTakToe.API", "TikTakToe.API\TikTakToe.API.csproj", "{497FEE03-473D-4829-9BA3-FC0ACFCFE71A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TikTakToe.Engines", "TikTakToe.Engines\TikTakToe.Engines.csproj", "{8453C128-F6C6-432E-971E-6A62F100E049}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TikTakToe.EngineConsole", "TikTakToe.EngineConsole\TikTakToe.EngineConsole.csproj", "{8DEB2F9A-AA8E-40B3-85B3-9D223166BBA2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{8453C128-F6C6-432E-971E-6A62F100E049}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8453C128-F6C6-432E-971E-6A62F100E049}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8453C128-F6C6-432E-971E-6A62F100E049}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DEB2F9A-AA8E-40B3-85B3-9D223166BBA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DEB2F9A-AA8E-40B3-85B3-9D223166BBA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DEB2F9A-AA8E-40B3-85B3-9D223166BBA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DEB2F9A-AA8E-40B3-85B3-9D223166BBA2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

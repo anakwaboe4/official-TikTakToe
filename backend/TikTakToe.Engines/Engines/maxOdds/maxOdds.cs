@@ -10,7 +10,7 @@ using System.Threading.Tasks.Dataflow;
 
 namespace TikTakToe.Engines.Engines.maxOdds
 {
-    internal class maxOdds : IEngine
+    public class maxOdds : IEngine
     {
         public Core.Enums.Engines Engine => Core.Enums.Engines.MaxOdds;
 
