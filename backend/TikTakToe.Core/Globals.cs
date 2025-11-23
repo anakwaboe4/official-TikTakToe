@@ -12,15 +12,12 @@
 
         public static class Engines
         {
-            public static readonly List<string> EnginesDisplayNames = new List<string>
-            {
+            public static readonly List<string> EnginesDisplayNames =
+            [
                 "Player",
                 "PerfectOptemism",
-            };
-            public static readonly List<string> DisabledEnginesDisplayNames = new List<string>
-            {
-                
-            };
+            ];
+            public static readonly List<string> DisabledEnginesDisplayNames = [];
         }
     }
 }

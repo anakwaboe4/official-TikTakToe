@@ -8,29 +8,22 @@ using TikTakToe.Repositories.Models;
 
 namespace TikTakToe.Services
 {
-    public class GameService : IGameService
+    public class GameService(
+        TikTakToeContext tikTakToeContext) : IGameService
     {
-        private readonly TikTakToeContext _tikTakToeDbContext;
 
-        public IEnumerable<IEngine> Participants { get; set; }
-        public Board Board { get; set; }
-
-        public GameService(TikTakToeContext tikTakToeContext)
-        {
-            _tikTakToeDbContext = tikTakToeContext;
-            Participants = new List<IEngine>() { new Player(), new Player() };
-            Board = new Board();
-        }
+        public IEnumerable<IEngine> Participants { get; set; } = [new Player(), new Player()];
+        public Board Board { get; set; } = new Board();
 
         public GameItem NewGame(List<Core.Enums.Engines>? engineIds = null, int? lengthX = null, int? lengthY = null)
         {
-            if(engineIds == null || !engineIds.Any())
+            if(engineIds == null || engineIds.Count == 0)
             {
-                engineIds = new List<Core.Enums.Engines>()
-                {
+                engineIds =
+                [
                     Core.Enums.Engines.Player,
                     Core.Enums.Engines.Player,
-                };
+                ];
             }
 
             lengthX ??= 3;
@@ -38,14 +31,14 @@ namespace TikTakToe.Services
 
             var newGame = new GameItem(lengthX.Value, lengthY.Value, engineIds, new Squares[lengthX.Value * lengthY.Value].ToList());
 
-            _tikTakToeDbContext.Games.Add(newGame);
+            tikTakToeContext.Games.Add(newGame);
 
             return newGame;
         }
 
         public GameItem? GetGame(Guid gameId)
         {
-            var game = _tikTakToeDbContext.Games
+            var game = tikTakToeContext.Games
                 .Where(g => g.Id == gameId)
                 .Include(g => g.Moves)
                 .FirstOrDefault();
@@ -56,7 +49,7 @@ namespace TikTakToe.Services
         public bool CheckMove(int position)
         {
             // Check if int position is valid and if board position is empty
-            if(position < Board.BoardSquares.Count() &&
+            if(position < Board.BoardSquares.Length &&
                 Board.BoardSquares[position] == Squares.Empty)
             {
                 return true;
