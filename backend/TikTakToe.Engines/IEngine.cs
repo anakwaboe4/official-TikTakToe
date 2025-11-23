@@ -4,8 +4,10 @@ namespace TikTakToe.Engines
     public interface IEngine
     {
         public Core.Enums.Engines Engine {  get; }
-        public int MakeMove(int move);
-        public int SetPos(int position);
-        public double Bench(int depth);
+        // board: 3x3 grid where 0 = empty, 1 = X, 2 = O
+        // nextPlayer: 1 = X, 2 = O
+        public int[,] MakeMove(int depth = 0);
+        public int[,] SetPos(int[,] board, int nextPlayer, int depth = 0);
+        public double Bench(int depth = 0);
     }
 }
