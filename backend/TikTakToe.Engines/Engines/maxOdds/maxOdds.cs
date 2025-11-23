@@ -58,17 +58,18 @@ namespace TikTakToe.Engines.Engines.maxOdds
 
             List<int> scores = new List<int>();
             List<int[,]> moves = new List<int[,]>();
-            for(int i = 1; i <= 9; i++)
+            for(int rr = 0; rr < 3; rr++)
             {
-                int rr = (i - 1) / 3;
-                int cc = (i - 1) % 3;
-                if(board[rr, cc] != 0) continue;
-                int[,] child = CloneBoard(board);
-                child[rr, cc] = player;
-                int next = player == 1 ? 2 : 1;
-                var (result, score) = Minimax(child, next, enginePlayer);
-                scores.Add(score);
-                moves.Add(result);
+                for(int cc = 0; cc < 3; cc++)
+                {
+                    if(board[rr, cc] != 0) continue;
+                    int[,] child = CloneBoard(board);
+                    child[rr, cc] = player;
+                    int next = player == 1 ? 2 : 1;
+                    var (result, score) = Minimax(child, next, enginePlayer);
+                    scores.Add(score);
+                    moves.Add(result);
+                }
             }
 
             if(player == 1)
