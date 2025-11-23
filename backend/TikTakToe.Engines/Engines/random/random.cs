@@ -31,7 +31,7 @@ namespace TikTakToe.Engines.Engines.random
             if (depth != 0) throw new NotImplementedException("MakeMove with depth not implemented in random engine.");
             int[,] currentBoard = (int[,])board.Clone();
             int currentPlayer = nextPlayer;
-                        List<(int, int)> availableMoves = new List<(int, int)>();
+            List<(int, int)> availableMoves = new List<(int, int)>();
             for (int i = 0; i < 3; i++)
             {
                 for (int j = 0; j < 3; j++)
