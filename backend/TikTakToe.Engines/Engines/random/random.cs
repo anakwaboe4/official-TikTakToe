@@ -12,66 +12,46 @@ namespace TikTakToe.Engines.Engines.random
     {
         public Core.Enums.Engines Engine => Core.Enums.Engines.Random;
 
-        private int board;
         private Stopwatch sw = new Stopwatch();
         private Random randomPicker = new Random();
 
         public double Bench(int depth)
         {
+            if (depth != 0) throw new NotImplementedException("Bench with depth not implemented in random engine.");
             sw.Restart();
             sw.Start();
-            SetPos(0);
+            _ = MakeMove(new int[3, 3], 1);
             sw.Stop();
             return sw.ElapsedMilliseconds;
         }
 
-        public int MakeMove(int move)
+        // returns new board and an integer score (random engine returns 0)
+        public (int[,] board, int score) MakeMove(int[,] board, int nextPlayer, int depth = 0)
         {
-            board = Domove(board, move);
-            List<int> legalMoves = new List<int>();
-            for(int i = 1; i <= 9; i++)
+            if (depth != 0) throw new NotImplementedException("MakeMove with depth not implemented in random engine.");
+            int[,] currentBoard = (int[,])board.Clone();
+            int currentPlayer = nextPlayer;
+            List<(int, int)> availableMoves = new List<(int, int)>();
+            for (int i = 0; i < 3; i++)
             {
-                if(Domove(board, i) != 0)
+                for (int j = 0; j < 3; j++)
                 {
-                    legalMoves.Add(i);
-                }
-            }  
-            int index = randomPicker.Next(legalMoves.Count);
-            return legalMoves[index];
-        }
-
-        public int SetPos(int position)
-        {
-            board = position;
-            List<int> legalMoves = new List<int>();
-            for(int i = 1; i <= 9; i++)
-            {
-                if(Domove(board, i) != 0)
-                {
-                    legalMoves.Add(i);
+                    if (currentBoard[i, j] == 0)
+                    {
+                        availableMoves.Add((i, j));
+                    }
                 }
             }
-            int index = randomPicker.Next(legalMoves.Count);
-            return legalMoves[index];
-        }
-
-        private int Domove(int board, int move)
-        {
-            int player = (int)(board / 1000000000) + 1;
-            int positionValue = (int)Math.Pow(10, move - 1);
-            int digit = (board / positionValue) % 10;
-
-            if(digit == 0)
+            if (availableMoves.Count == 0)
             {
-                board += player * positionValue;
+                throw new InvalidOperationException("No available moves left.");
             }
-            else
-            {
-                return 0;
-            }
-            if(player == 1) board += 1000000;
-            else board -= 1000000;
-            return board;
+            var (row, col) = availableMoves[randomPicker.Next(availableMoves.Count)];
+            currentBoard[row, col] = currentPlayer;
+            // score is random number between -1000 and 1000
+            int score = randomPicker.Next(-1000, 1001);
+            return ((int[,])currentBoard.Clone(), score);
+
         }
     }
 }

@@ -4,6 +4,6 @@
     {
         Player = 0,
         Random = 1,
-        PerfectOptemism = 2,
+        MaxOdds = 2,
     }
 }
