@@ -41,6 +41,15 @@ namespace TikTakToe.Engines.Engines.maxOdds
         // player: current player to move
         // enginePlayer: the player that this engine is trying to maximize for (the original nextPlayer passed to MakeMove)
         // When current player == enginePlayer we maximize; otherwise we model the opponent as mistake-prone and return the average score.
+        /// <summary>
+        /// Implements a non-standard minimax variant for Tic-Tac-Toe.
+        /// Instead of assuming the opponent always plays optimally, this algorithm
+        /// models the opponent as mistake-prone by averaging the scores of all possible moves
+        /// on the opponent's turn, rather than taking the minimum or maximum.
+        /// This differs from traditional minimax, which assumes both players play optimally
+        /// (maximizing or minimizing the score). The average scoring approach can lead to
+        /// different move choices, especially in positions where the opponent has many options.
+        /// </summary>
         private (int[,] result, int score) Minimax(int[,] board, int player, int enginePlayer)
         {
             int eval = EvaluateBoard(board);
