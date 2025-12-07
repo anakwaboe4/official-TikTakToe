@@ -1,8 +1,7 @@
-﻿namespace TikTakToe.Core.Enums
+﻿namespace TikTakToe.Core.Enums;
+
+public enum Engines
 {
-    public enum Engines
-    {
-        Player = 0,
-        PerfectOptemism = 1,
-    }
+    Player = 0,
+    PerfectOptemism = 1,
 }

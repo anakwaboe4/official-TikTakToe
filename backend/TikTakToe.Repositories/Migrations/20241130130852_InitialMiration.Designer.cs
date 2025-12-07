@@ -8,75 +8,74 @@ using TikTakToe.Repositories.EntityFramework;
 
 #nullable disable
 
-namespace TikTakToe.Repositories.Migrations
+namespace TikTakToe.Repositories.Migrations;
+
+[DbContext(typeof(TikTakToeContext))]
+[Migration("20241130130852_InitialMiration")]
+partial class InitialMiration
 {
-    [DbContext(typeof(TikTakToeContext))]
-    [Migration("20241130130852_InitialMiration")]
-    partial class InitialMiration
+    /// <inheritdoc />
+    protected override void BuildTargetModel(ModelBuilder modelBuilder)
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
-        {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
+        modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
 
-            modelBuilder.Entity("TikTakToe.Repositories.Models.GameItem", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+        modelBuilder.Entity("TikTakToe.Repositories.Models.GameItem", b =>
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("TEXT");
 
-                    b.Property<int>("GridSizeX")
-                        .HasColumnType("INTEGER");
+                b.Property<int>("GridSizeX")
+                    .HasColumnType("INTEGER");
 
-                    b.Property<int>("GridSizeY")
-                        .HasColumnType("INTEGER");
+                b.Property<int>("GridSizeY")
+                    .HasColumnType("INTEGER");
 
-                    b.Property<int>("Move")
-                        .HasColumnType("INTEGER");
+                b.Property<int>("Move")
+                    .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("Games");
-                });
+                b.ToTable("Games");
+            });
 
-            modelBuilder.Entity("TikTakToe.Repositories.Models.MoveItem", b =>
-                {
-                    b.Property<Guid>("MoveId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+        modelBuilder.Entity("TikTakToe.Repositories.Models.MoveItem", b =>
+            {
+                b.Property<Guid>("MoveId")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("TEXT");
 
-                    b.Property<int>("Engine")
-                        .HasColumnType("INTEGER");
+                b.Property<int>("Engine")
+                    .HasColumnType("INTEGER");
 
-                    b.Property<Guid?>("GameItemId")
-                        .HasColumnType("TEXT");
+                b.Property<Guid?>("GameItemId")
+                    .HasColumnType("TEXT");
 
-                    b.Property<int>("Index")
-                        .HasColumnType("INTEGER");
+                b.Property<int>("Index")
+                    .HasColumnType("INTEGER");
 
-                    b.Property<int>("Square")
-                        .HasColumnType("INTEGER");
+                b.Property<int>("Square")
+                    .HasColumnType("INTEGER");
 
-                    b.HasKey("MoveId");
+                b.HasKey("MoveId");
 
-                    b.HasIndex("GameItemId");
+                b.HasIndex("GameItemId");
 
-                    b.ToTable("Moves");
-                });
+                b.ToTable("Moves");
+            });
 
-            modelBuilder.Entity("TikTakToe.Repositories.Models.MoveItem", b =>
-                {
-                    b.HasOne("TikTakToe.Repositories.Models.GameItem", null)
-                        .WithMany("Moves")
-                        .HasForeignKey("GameItemId");
-                });
+        modelBuilder.Entity("TikTakToe.Repositories.Models.MoveItem", b =>
+            {
+                b.HasOne("TikTakToe.Repositories.Models.GameItem", null)
+                    .WithMany("Moves")
+                    .HasForeignKey("GameItemId");
+            });
 
-            modelBuilder.Entity("TikTakToe.Repositories.Models.GameItem", b =>
-                {
-                    b.Navigation("Moves");
-                });
+        modelBuilder.Entity("TikTakToe.Repositories.Models.GameItem", b =>
+            {
+                b.Navigation("Moves");
+            });
 #pragma warning restore 612, 618
-        }
     }
 }

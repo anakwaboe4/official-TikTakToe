@@ -1,10 +1,9 @@
 ﻿using TikTakToe.Core.Enums;
 
-namespace TikTakToe.API.Models.Games
+namespace TikTakToe.API.Models.Games;
+
+public record MoveAiPutBody
 {
-    public struct MoveAiPutBody
-    {
-        public Squares Square { get; set; }
-        public int Participant { get; set; }
-    }
+    public Squares Square { get; set; }
+    public int Participant { get; set; }
 }

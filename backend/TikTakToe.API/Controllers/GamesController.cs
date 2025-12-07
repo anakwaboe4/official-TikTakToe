@@ -8,110 +8,103 @@ using TikTakToe.Repositories.EntityFramework;
 using TikTakToe.Repositories.Models;
 using TikTakToe.Services;
 
-namespace TikTakToe.API.Controllers
+namespace TikTakToe.API.Controllers;
+
+public class GamesController(IGameServiceOld gameService) : ControllerBase
 {
-    public class GamesController : ControllerBase
+
+    #region POST/games/{gameId}
+    [HttpPost]
+    [Produces("application/json")]
+    [SwaggerResponse(200, Type = typeof(GamesResponse))]
+    [SwaggerResponse(400, Type = typeof(ErrorResponse))]
+    [Route("api/games/{gameId}")]
+    public ActionResult GamesGetAsync([FromBody] GamePostBody? body, [FromRoute] Guid? gameId)
     {
-        private readonly IGameService _gameService;
-
-        public GamesController(IGameService gameService)
+        try
         {
-            _gameService = gameService;
-        }
+            var game = default(GameItem);
 
-        #region POST/games/{gameId}
-        [HttpPost]
-        [Produces("application/json")]
-        [SwaggerResponse(200, Type = typeof(GamesResponse))]
-        [SwaggerResponse(400, Type = typeof(ErrorResponse))]
-        [Route("api/games/{gameId}")]
-        public ActionResult GamesGetAsync([FromBody] GamePostBody? body, [FromRoute] Guid? gameId)
+            if(!gameId.HasValue || gameId.Value == Guid.Empty || body is null)
+            {
+                game = gameService.NewGame(body?.ParticipantsIds, body?.LengthX, body?.LengthY);
+            }
+            else
+            {
+                game = gameService.GetGame(gameId.Value);
+            }
+
+            return Ok(new GamesResponse() { Game = game });
+        }
+        catch(Exception)
         {
-            try
-            {
-                var game = default(GameItem);
-
-                if(!gameId.HasValue || gameId.Value == Guid.Empty || body == null || !body.HasValue)
-                {
-                    game = _gameService.NewGame(body?.ParticipantsIds, body?.LengthX, body?.LengthY);
-                }
-                else
-                {
-                    game = _gameService.GetGame(gameId.Value);
-                }
-
-                return Ok(new GamesResponse() { Game = game });
-            }
-            catch(Exception)
-            {
-                return BadRequest("Failed to get (new) game, check game settings");
-            }
+            return BadRequest("Failed to get (new) game, check game settings");
         }
-        #endregion
-
-        #region PUT/games/{gameId}/move
-        [HttpPut]
-        [Produces("application/json")]
-        [SwaggerResponse(200, Type = typeof(GamesResponse))]
-        [SwaggerResponse(400, Type = typeof(ErrorResponse))]
-        [Route("api/games/{gameId}/move")]
-        public ActionResult MakeMove([FromBody] MovePutBody move, [FromRoute] Guid gameId)
-        {
-            try
-            {
-                _gameService.MakeMove(move.Position, move.Square);
-
-                return Ok(new GamesResponse() { /*Squares = _gameService.GetBoard()*/ });
-            }
-            catch(Exception)
-            {
-                return BadRequest("Failed making move for player, check game settings");
-            }
-        }
-        #endregion
-
-        #region PUT/games/{gameId}/aimove
-        [HttpPut]
-        [Produces("application/json")]
-        [SwaggerResponse(200, Type = typeof(bool))]
-        [SwaggerResponse(400, Type = typeof(ErrorResponse))]
-        [Route("api/games/{gameId}/aimove")]
-        public ActionResult MakeAiMove([FromBody] MoveAiPutBody move, [FromRoute] Guid gameId)
-        {
-            try
-            {
-                return Ok(_gameService.MakeAiMove(move.Participant, move.Square));
-            }
-            catch(Exception)
-            {
-                return BadRequest("Failed making move for AI, check game settings");
-            }
-        }
-        #endregion
-
-        #region GET/games/settings
-        [HttpGet]
-        [Produces("application/json")]
-        [SwaggerResponse(200, Type = typeof(SettingsResponse))]
-        [SwaggerResponse(400, Type = typeof(ErrorResponse))]
-        [Route("api/games/settings")]
-        public ActionResult GetSettings()
-        {
-            try
-            {
-                var response = new SettingsResponse()
-                {
-                    Engines = Globals.Engines.EnginesDisplayNames,
-                    DisabledEngines = Globals.Engines.DisabledEnginesDisplayNames
-                };
-
-                return Ok(response);
-            }
-            catch (Exception)
-            {
-                return BadRequest("Failed to get engine display names");
-            }
-        }
-        #endregion
     }
+    #endregion
+
+    #region PUT/games/{gameId}/move
+    [HttpPut]
+    [Produces("application/json")]
+    [SwaggerResponse(200, Type = typeof(GamesResponse))]
+    [SwaggerResponse(400, Type = typeof(ErrorResponse))]
+    [Route("api/games/{gameId}/move")]
+    public ActionResult MakeMove([FromBody] MovePutBody move, [FromRoute] Guid gameId)
+    {
+        try
+        {
+            gameService.MakeMove(move.Position, move.Square);
+
+            return Ok(new GamesResponse() { /*Squares = _gameService.GetBoard()*/ });
+        }
+        catch(Exception)
+        {
+            return BadRequest("Failed making move for player, check game settings");
+        }
+    }
+    #endregion
+
+    #region PUT/games/{gameId}/aimove
+    [HttpPut]
+    [Produces("application/json")]
+    [SwaggerResponse(200, Type = typeof(bool))]
+    [SwaggerResponse(400, Type = typeof(ErrorResponse))]
+    [Route("api/games/{gameId}/aimove")]
+    public ActionResult MakeAiMove([FromBody] MoveAiPutBody move, [FromRoute] Guid gameId)
+    {
+        try
+        {
+            return Ok(gameService.MakeAiMove(move.Participant, move.Square));
+        }
+        catch(Exception)
+        {
+            return BadRequest("Failed making move for AI, check game settings");
+        }
+    }
+    #endregion
+
+    #region GET/games/settings
+    [HttpGet]
+    [Produces("application/json")]
+    [SwaggerResponse(200, Type = typeof(SettingsResponse))]
+    [SwaggerResponse(400, Type = typeof(ErrorResponse))]
+    [Route("api/games/settings")]
+    public ActionResult GetSettings()
+    {
+        try
+        {
+            var response = new SettingsResponse()
+            {
+                Engines = Globals.Engines.EnginesDisplayNames,
+                DisabledEngines = Globals.Engines.DisabledEnginesDisplayNames
+            };
+
+            return Ok(response);
+        }
+        catch (Exception)
+        {
+            return BadRequest("Failed to get engine display names");
+        }
+    }
+    #endregion
 }

@@ -1,23 +1,10 @@
-﻿namespace TikTakToe.Engines
-{
-    public interface IEngine
-    {
-        public Core.Enums.Engines Engine {  get; }
-        public int MakeMove(int move);
-        public int SetPos(int position);
-        public double Bench(int depth);
-    }
+﻿namespace TikTakToe.Engines;
 
-    public class Engine
-    {
-        /*public static IEngine GetEngine(Core.Enums.Engines engine)
-        {
-            return engine switch
-            {
-                Core.Enums.Engines.Player => new Player(),
-                Core.Enums.Engines.PerfectOptemism => new PerfectOptemism(),
-                _ => null,
-            };
-        }*/
-    }
+public interface IEngine
+{
+    public Core.Enums.Engines Engine { get; }
+    // board: 3x3 grid where 0 = empty, 1 = X, 2 = O
+    // nextPlayer: 1 = X, 2 = O
+    public int[,] MakeMove(int[,] board, int nextPlayer, int depth = 0);
+    public double Bench(int depth = 0);
 }

@@ -1,10 +1,8 @@
-﻿using TikTakToe.Core.Enums;
-using TikTakToe.Repositories.Models;
+﻿using TikTakToe.Repositories.Models;
 
-namespace TikTakToe.API.Models.Games
+namespace TikTakToe.API.Models.Games;
+
+public record GamesResponse
 {
-    public struct GamesResponse
-    {
-        public GameItem? Game { get; set; }
-    }
+    public GameItem? Game { get; set; }
 }

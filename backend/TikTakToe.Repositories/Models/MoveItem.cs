@@ -1,15 +1,18 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using TikTakToe.Core.Enums;
 
-namespace TikTakToe.Repositories.Models
+namespace TikTakToe.Repositories.Models;
+
+public class MoveItem
 {
-    public class MoveItem
+    public MoveItem()
     {
-        [Key]
-        public Guid MoveId { get; set; }
-        public int Index { get; set; }
-        public Squares Square { get; set; }
-        public Engines Engine { get; set; }
+        MoveId = Guid.CreateVersion7();
     }
+
+    [Key]
+    public Guid MoveId { get; set; }
+    public int Index { get; set; }
+    public Squares Square { get; set; }
+    public Engines Engine { get; set; }
 }

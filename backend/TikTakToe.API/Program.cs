@@ -18,7 +18,7 @@ builder.BuildSwaggerSetup(config);
 builder.Services.AddDbContext<TikTakToeContext>(//options =>
                                                 //options.UseSqlite("Data Source=Database.db")
 );
-builder.Services.AddScoped<IGameService, GameService>();
+builder.Services.AddScoped<IGameServiceOld, GameServiceOld>();
 
 builder.Services.AddCors(options =>
 {
